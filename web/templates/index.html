@@ -3,628 +3,213 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Social Media Threat Intelligence System using BERT</title>
-  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <title>Social Media Threat Intelligence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
 
-  <!-- Navigation Bar -->
+  <!-- Navigation -->
   <nav class="navbar">
-    <a href="#hero" class="nav-brand">
-      <span class="shield-icon">🛡️</span>
-      <span>ThreatIntel BERT</span>
-    </a>
-    <div class="nav-links">
-      <a href="#hero" class="nav-link">Home</a>
-      <a href="#analyzer" class="nav-link">Threat Analyzer</a>
-      <a href="#model-info" class="nav-link">Model</a>
-      <a href="#dataset" class="nav-link">Dataset</a>
-      <a href="#performance" class="nav-link">Performance</a>
-      <a href="#outliers" class="nav-link">Outliers</a>
-      <a href="#architecture" class="nav-link">Architecture</a>
-      <a href="#workflow" class="nav-link">Workflow</a>
-    </div>
-    <div class="nav-status" id="system-status">
-      <span class="pulse-dot"></span> System Initializing...
+    <div class="nav-container">
+      <a href="#analyzer" class="nav-brand">
+        <span class="brand-icon">🛡️</span>
+        <span class="brand-text">Social Media Threat Intelligence</span>
+      </a>
+      <div class="nav-links">
+        <a href="#analyzer" class="nav-link">Home</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#model" class="nav-link">AI Model</a>
+        <a href="#workflow" class="nav-link">How It Works</a>
+      </div>
+      <div class="nav-status" id="system-status">
+        <span class="status-dot"></span> Online
+      </div>
     </div>
   </nav>
 
-  <!-- Section A: Hero / Home -->
-  <header id="hero" class="hero-section container">
-    <div class="hero-badge">
-      <span>🔒 CYBERSECURITY AI PROTOTYPE</span>
-      <span>•</span>
-      <span>BERT-BASE-UNCASED</span>
-    </div>
-    <h1 class="hero-title">Social Media Threat Intelligence<br>System using BERT</h1>
-    <p class="hero-subtitle">
-      AI-powered detection of potentially harmful social-media content using fine-tuned BERT transformer representations.
-    </p>
-    <p class="section-subtitle" style="margin-bottom: 2rem;">
-      Real-time sequence classification designed to differentiate benign everyday online communications from emerging threat vectors including <strong>Disinformation Claims</strong>, <strong>Targeted Cyber Harassment</strong>, and <strong>Financial Scam/Phishing Schemes</strong>.
-    </p>
-    <div class="hero-cta-group">
-      <a href="#analyzer" class="btn btn-primary">🔍 Analyze Text</a>
-      <a href="#performance" class="btn btn-secondary">📊 View Performance</a>
-    </div>
-
-    <!-- Telemetry Stats Cards -->
-    <div class="telemetry-grid">
-      <div class="telemetry-item">
-        <div class="telemetry-label">Dataset Trained</div>
-        <div class="telemetry-value">10,000</div>
-        <div class="telemetry-sub">5,000 Normal / 5,000 Threat</div>
+  <!-- Main Analyzer (Hero Section) -->
+  <main class="main-content">
+    <section id="analyzer" class="hero-section">
+      <div class="hero-header">
+        <h1 class="hero-title">Social Media Threat Intelligence</h1>
+        <p class="hero-subtitle">AI-powered analysis of social-media content using BERT.</p>
+        <p class="hero-desc">
+          Analyze a social-media post and identify whether its linguistic patterns are classified as <strong>Normal</strong> or potentially <strong>Threat</strong>-related.
+        </p>
       </div>
-      <div class="telemetry-item">
-        <div class="telemetry-label">Test Accuracy</div>
-        <div class="telemetry-value">100.0%</div>
-        <div class="telemetry-sub">Held-out 1,500 test set</div>
-      </div>
-      <div class="telemetry-item">
-        <div class="telemetry-label">Transformer Base</div>
-        <div class="telemetry-value">110M</div>
-        <div class="telemetry-sub">12 Layers | 768 Dim Encoder</div>
-      </div>
-      <div class="telemetry-item">
-        <div class="telemetry-label">Classification Mode</div>
-        <div class="telemetry-value">Binary</div>
-        <div class="telemetry-sub">Normal (0) vs Threat (1)</div>
-      </div>
-    </div>
-  </header>
 
-  <!-- Section B: Threat Analyzer (Core Interactive Section) -->
-  <section id="analyzer" class="container">
-    <div class="section-header">
-      <span class="section-tag">Interactive Threat Intelligence</span>
-      <h2 class="section-title">Live BERT Threat Analyzer</h2>
-      <p class="section-subtitle">
-        Input arbitrary English social-media text to run real-time contextual tokenization and sequence classification using the saved fine-tuned model.
-      </p>
-    </div>
-
-    <div class="analyzer-grid">
-      <!-- Input Column -->
-      <div class="cyber-card analyzer-input-container">
-        <div>
-          <label for="text-input" style="font-weight: 700; display: block; margin-bottom: 0.5rem;">Social Media Post Input</label>
-          <div class="textarea-wrapper">
-            <textarea id="text-input" class="cyber-textarea" placeholder="Enter a social-media post to analyze for threat patterns..."></textarea>
-          </div>
-        </div>
-
-        <div>
-          <div class="sample-chips-label">Quick Sample Inputs (Click to test):</div>
+      <!-- Interactive Analyzer Card -->
+      <div class="analyzer-card">
+        <div class="input-header">
+          <label for="text-input" class="input-label">Social Media Post</label>
           <div class="sample-chips">
-            <button class="chip chip-normal" data-sample="Had a great day with my friends today.">
-              ☕ Casual / Friends (Normal)
-            </button>
-            <button class="chip chip-threat" data-sample="Congratulations! You won a free phone. Click this link immediately!">
-              🎁 Free Prize Scam (Threat)
-            </button>
-            <button class="chip chip-normal" data-sample="Starting my morning with a warm cup of green tea and peaceful music.">
-              🍵 Morning Lifestyle (Normal)
-            </button>
-            <button class="chip chip-threat" data-sample="URGENT ALERT: Whistleblower leaks verified documents showing contaminated water supply. Share now!">
-              🚨 Emergency Disinformation (Threat)
-            </button>
-            <button class="chip chip-threat" data-sample="Hey @target_user_88 you are disgusting vermin and should be hunted down.">
-              ⚠️ Cyber Harassment (Threat)
-            </button>
-            <button class="chip chip-threat" data-sample="🚨🚨🚨 #breaking URGENT claim NOW http://crypto-giveaway-official-event.org/bonus 💥💥 @user_992">
-              ⚡ Noisy Outlier Scam (Threat)
-            </button>
+            <span class="chips-title">Quick Samples:</span>
+            <button type="button" class="chip" data-sample="Enjoying a quiet cup of coffee this morning with a good book.">☕ Benign Post</button>
+            <button type="button" class="chip" data-sample="URGENT: Your account is suspended. Click http://verify-bank-update.xyz to prevent immediate permanent closure.">⚠️ Phishing Scam</button>
+            <button type="button" class="chip" data-sample="BREAKING: Official secret documents leaked revealing dangerous chemical contamination in city water! Share fast!">🚨 Disinformation</button>
           </div>
         </div>
 
-        <div style="display: flex; gap: 1rem; margin-top: auto;">
-          <button id="analyze-btn" class="btn btn-primary" style="flex: 2;">
-            <span>🔍 Analyze Threat</span>
-          </button>
-          <button id="clear-btn" class="btn btn-secondary" style="flex: 1;">
-            <span>🔄 Clear</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Real-Time Output Column -->
-      <div class="cyber-card result-card" id="result-area">
-        <div id="result-placeholder" class="result-placeholder">
-          <div class="result-placeholder-icon">🛡️</div>
-          <h3 style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Awaiting Post Analysis</h3>
-          <p style="font-size: 0.85rem; max-width: 280px;">Enter social-media text and click "Analyze Threat" to run live BERT transformer inference.</p>
+        <div class="textarea-wrapper">
+          <textarea 
+            id="text-input" 
+            class="post-textarea" 
+            rows="4" 
+            placeholder="Enter or paste a social-media post..."
+          ></textarea>
         </div>
 
-        <div id="result-content" style="display: none;">
-          <div class="verdict-header">
-            <div>
-              <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase;">Prediction Result</span>
-              <div id="verdict-badge" class="verdict-badge badge-normal">✅ NORMAL (SAFE)</div>
+        <div id="validation-msg" class="validation-msg">Please enter a social-media post to analyze.</div>
+
+        <div class="action-row">
+          <button id="clear-btn" class="btn btn-secondary" type="button">Clear</button>
+          <button id="analyze-btn" class="btn btn-primary" type="button">Analyze Post</button>
+        </div>
+
+        <!-- Result Container -->
+        <div id="result-container" class="result-container">
+          <div class="result-divider"></div>
+          
+          <div class="result-header">
+            <span class="result-tag">ANALYSIS RESULT</span>
+          </div>
+
+          <div class="result-grid">
+            <div class="result-stat-box">
+              <span class="stat-label">Prediction</span>
+              <div id="result-prediction" class="stat-value prediction-badge normal">NORMAL</div>
             </div>
-            <div style="text-align: right;">
-              <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase;">Confidence</span>
-              <div id="confidence-text" style="font-size: 1.6rem; font-weight: 800; color: #ffffff;">99.99%</div>
+
+            <div class="result-stat-box">
+              <span class="stat-label">Confidence</span>
+              <div class="confidence-display">
+                <span id="result-confidence" class="stat-value">99.85%</span>
+              </div>
+              <div class="confidence-bar-bg">
+                <div id="confidence-bar" class="confidence-bar-fill normal" style="width: 99.85%;"></div>
+              </div>
             </div>
           </div>
 
-          <div class="meter-section">
-            <div class="meter-header">
-              <span>Model Confidence Meter</span>
-              <span>Softmax Activation</span>
-            </div>
-            <div class="meter-track">
-              <div id="meter-fill" class="meter-fill normal" style="width: 99.99%;"></div>
-            </div>
-          </div>
-
-          <div class="prob-split">
-            <div class="prob-box">
-              <div class="prob-box-label">Normal Class Probability</div>
-              <div id="prob-normal" class="prob-box-val" style="color: var(--accent-emerald);">99.99%</div>
-            </div>
-            <div class="prob-box">
-              <div class="prob-box-label">Threat Class Probability</div>
-              <div id="prob-threat" class="prob-box-val" style="color: var(--accent-crimson);">0.01%</div>
-            </div>
-          </div>
-
-          <div class="explanation-box">
-            <strong>Contextual Analysis: </strong>
-            <span id="explanation-text">Analyzed via fine-tuned BERT transformer model.</span>
-          </div>
-
-          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
-            <span>Inference Latency: <strong id="latency-text" style="color: var(--accent-cyan);">-- ms</strong></span>
-            <button id="json-toggle" style="background: none; border: none; color: var(--accent-cyan); font-family: var(--font-mono); cursor: pointer;">View Raw JSON Response ▾</button>
-          </div>
-
-          <div id="json-container" style="display: none; margin-top: 0.75rem;">
-            <pre id="raw-json-output" style="background: rgba(0,0,0,0.6); padding: 0.75rem; border-radius: 6px; font-size: 0.75rem; font-family: var(--font-mono); color: #38bdf8; overflow-x: auto; max-height: 120px;"></pre>
-          </div>
+          <p id="result-explanation" class="result-explanation">
+            The model classifies this post as normal, safe social media communication without threat patterns.
+          </p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Section C: About the Model -->
-  <section id="model-info" class="container">
-    <div class="section-header">
-      <span class="section-tag">Deep Learning Architecture</span>
-      <h2 class="section-title">About the BERT Fine-Tuning</h2>
-      <p class="section-subtitle">
-        How Bidirectional Encoder Representations from Transformers (**BERT**) captures contextual threat semantics in social text.
-      </p>
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-      <div class="cyber-card">
-        <h3 style="font-size: 1.15rem; color: var(--accent-cyan); margin-bottom: 0.75rem;">🧠 Bidirectional Attention</h3>
-        <p style="font-size: 0.9rem; color: var(--text-secondary);">
-          Unlike traditional recurrent networks (RNNs/LSTMs) that read text sequentially in one direction, BERT’s self-attention mechanism processes tokens bidirectionally simultaneously, capturing the surrounding context of every word.
+    <!-- About the Project Section -->
+    <section id="about" class="content-section">
+      <div class="section-card">
+        <h2 class="section-heading">About the Project</h2>
+        <p class="section-text">
+          Social Media Threat Intelligence System is an AI-based application designed to analyze English social-media content and identify potentially threatening or malicious linguistic patterns.
         </p>
+        <div class="scope-callout">
+          <span class="callout-icon">ℹ️</span>
+          <p class="callout-text">
+            The system is designed as a threat-intelligence classification prototype. It identifies patterns learned during model training and does not independently verify whether information is factually true or whether a person is actually dangerous.
+          </p>
+        </div>
       </div>
+    </section>
 
-      <div class="cyber-card">
-        <h3 style="font-size: 1.15rem; color: var(--accent-cyan); margin-bottom: 0.75rem;">🔤 WordPiece Tokenization</h3>
-        <p style="font-size: 0.9rem; color: var(--text-secondary);">
-          Uses a 30,522-token vocabulary with subword segmenting. Slang, hashtags, and noisy repeated characters (e.g. <code>heeeeyyy</code>) are cleanly split into subwords without losing semantic representations.
-        </p>
-      </div>
-
-      <div class="cyber-card">
-        <h3 style="font-size: 1.15rem; color: var(--accent-cyan); margin-bottom: 0.75rem;">🎯 Binary Classification Head</h3>
-        <p style="font-size: 0.9rem; color: var(--text-secondary);">
-          The special <code>[CLS]</code> token representation at the final transformer encoder layer is passed into a dropout layer and linear classifier head configured for <code>num_labels=2</code> (0: Normal, 1: Threat).
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section D: Dataset Statistics -->
-  <section id="dataset" class="container">
-    <div class="section-header">
-      <span class="section-tag">Data Engineering</span>
-      <h2 class="section-title">Dataset Distribution & Partitioning</h2>
-      <p class="section-subtitle">
-        Controlled synthetic English social-media dataset engineered with balanced classes and realistic noise outliers.
-      </p>
-    </div>
-
-    <div class="metrics-grid">
-      <div class="cyber-card metric-card">
-        <div class="metric-val">10,000</div>
-        <div class="metric-name">Total Samples</div>
-      </div>
-      <div class="cyber-card metric-card">
-        <div class="metric-val" style="background: linear-gradient(135deg, #10b981, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">5,000</div>
-        <div class="metric-name">Normal (Class 0)</div>
-      </div>
-      <div class="cyber-card metric-card">
-        <div class="metric-val" style="background: linear-gradient(135deg, #ef4444, #f87171); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">5,000</div>
-        <div class="metric-name">Threat (Class 1)</div>
-      </div>
-      <div class="cyber-card metric-card">
-        <div class="metric-val" style="background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">350</div>
-        <div class="metric-name">Noisy Outliers (3.5%)</div>
-      </div>
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-      <div class="cyber-card">
-        <h3 style="font-size: 1.05rem; margin-bottom: 0.75rem; color: #ffffff;">Stratified Split Breakdown</h3>
-        <ul style="list-style: none; font-size: 0.9rem; color: var(--text-secondary); line-height: 2;">
-          <li>🔹 <strong>Training Set (70%)</strong>: 7,000 posts (3,500 Normal, 3,500 Threat)</li>
-          <li>🔹 <strong>Validation Set (15%)</strong>: 1,500 posts (750 Normal, 750 Threat)</li>
-          <li>🔹 <strong>Test Set (15%)</strong>: 1,500 posts (750 Normal, 750 Threat)</li>
-          <li>🔹 <strong>Reproducibility</strong>: Stratified random state seed <code>42</code></li>
-        </ul>
-      </div>
-
-      <div class="cyber-card">
-        <h3 style="font-size: 1.05rem; margin-bottom: 0.75rem; color: #ffffff;">Threat Categories Represented</h3>
-        <ul style="list-style: none; font-size: 0.9rem; color: var(--text-secondary); line-height: 2;">
-          <li>⚠️ <strong>Disinformation & Fake Claims</strong>: Fabricated emergencies & bans</li>
-          <li>⚠️ <strong>Targeted Cyber Harassment</strong>: Hostility, intimidation & bullying</li>
-          <li>⚠️ <strong>Phishing & Financial Scams</strong>: Fake giveaways, urgent crypto fraud</li>
-          <li>✅ <strong>Normal Topics</strong>: Tech, daily life, travel, food, sports, hobbies</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Generated Distribution Plots -->
-    <div class="plots-grid">
-      <div class="cyber-card plot-card">
-        <img src="/results/class_distribution.png" alt="Class Distribution" class="previewable-plot">
-        <div class="plot-title">Class Distribution (50/50 Balance)</div>
-      </div>
-      <div class="cyber-card plot-card">
-        <img src="/results/outlier_distribution.png" alt="Outlier Distribution" class="previewable-plot">
-        <div class="plot-title">Outlier Distribution (3.5% Noisy Samples)</div>
-      </div>
-      <div class="cyber-card plot-card">
-        <img src="/results/text_length_distribution.png" alt="Text Length Distribution" class="previewable-plot">
-        <div class="plot-title">Text Character & Word Lengths</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section E: Performance & Evaluation -->
-  <section id="performance" class="container">
-    <div class="section-header">
-      <span class="section-tag">Model Evaluation</span>
-      <h2 class="section-title">Actual Test-Set Performance</h2>
-      <p class="section-subtitle">
-        Performance evaluated on the synthetic held-out test set (1,500 unseen samples).
-      </p>
-    </div>
-
-    <div class="metrics-grid">
-      <div class="cyber-card metric-card">
-        <div class="metric-val">100.0%</div>
-        <div class="metric-name">Test Accuracy</div>
-      </div>
-      <div class="cyber-card metric-card">
-        <div class="metric-val">1.0000</div>
-        <div class="metric-name">Threat Precision</div>
-      </div>
-      <div class="cyber-card metric-card">
-        <div class="metric-val">1.0000</div>
-        <div class="metric-name">Threat Recall</div>
-      </div>
-      <div class="cyber-card metric-card">
-        <div class="metric-val">1.0000</div>
-        <div class="metric-name">Threat F1-Score</div>
-      </div>
-      <div class="cyber-card metric-card">
-        <div class="metric-val">1.0000</div>
-        <div class="metric-name">Macro F1</div>
-      </div>
-      <div class="cyber-card metric-card">
-        <div class="metric-val">1.0000</div>
-        <div class="metric-name">Weighted F1</div>
-      </div>
-    </div>
-
-    <!-- Confusion Matrix Card -->
-    <div class="cyber-card" style="margin-bottom: 2rem;">
-      <h3 style="text-align: center; font-size: 1.25rem; margin-bottom: 1.25rem; color: #ffffff;">
-        Confusion Matrix on Held-Out Test Set (1,500 Samples)
-      </h3>
-      <div class="cm-table-container">
-        <table class="cm-table">
-          <thead>
-            <tr>
-              <th>Actual \ Predicted</th>
-              <th>Predicted Normal</th>
-              <th>Predicted Threat</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>Actual Normal (750)</th>
-              <td class="cm-cell-tn">750 (TN)</td>
-              <td class="cm-cell-fp">0 (FP)</td>
-            </tr>
-            <tr>
-              <th>Actual Threat (750)</th>
-              <td class="cm-cell-fn">0 (FN)</td>
-              <td class="cm-cell-tp">750 (TP)</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
-        Zero False Positives and Zero False Negatives observed on the held-out evaluation set.
-      </p>
-    </div>
-
-    <!-- Actual Performance Plots -->
-    <div class="plots-grid">
-      <div class="cyber-card plot-card">
-        <img src="/results/confusion_matrix.png" alt="Confusion Matrix Plot" class="previewable-plot">
-        <div class="plot-title">Confusion Matrix Heatmap</div>
-      </div>
-      <div class="cyber-card plot-card">
-        <img src="/results/training_loss.png" alt="Training Loss Plot" class="previewable-plot">
-        <div class="plot-title">Training Loss (Epoch 1: 0.0635 → Epoch 2: 0.0016)</div>
-      </div>
-      <div class="cyber-card plot-card">
-        <img src="/results/training_accuracy.png" alt="Training Accuracy Plot" class="previewable-plot">
-        <div class="plot-title">Accuracy Curves (Val Acc: 99.93% → 100.0%)</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section F: Outlier Analysis -->
-  <section id="outliers" class="container">
-    <div class="section-header">
-      <span class="section-tag">Robustness Analysis</span>
-      <h2 class="section-title">Outlier & Noise Testing</h2>
-      <p class="section-subtitle">
-        Evaluating transformer resilience against intentionally noisy social-media formatting.
-      </p>
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
-      <div class="cyber-card">
-        <h3 style="font-size: 1.1rem; color: var(--accent-amber); margin-bottom: 0.75rem;">⚡ Injected Noise Patterns</h3>
-        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
-          To mirror real-world social media volatility, 350 samples (3.5%) were injected with intentional artifacts:
-        </p>
-        <ul style="list-style: none; font-size: 0.85rem; color: var(--text-muted); line-height: 1.9;">
-          <li>• <strong>Excessive Punctuation</strong>: <code>"!!!!!!!????????? $$$$$$"</code></li>
-          <li>• <strong>Repeated Words</strong>: <code>"urgent urgent please please"</code></li>
-          <li>• <strong>Mixed Random Casing</strong>: <code>"uRgEnT clAiM nOw"</code></li>
-          <li>• <strong>Vowel Stretching</strong>: <code>"heeeeyyyy noooow"</code></li>
-          <li>• <strong>Malformed URLs & Emojis</strong>: <code>"🚨🚨 #breaking http://xyz.win @admin"</code></li>
-          <li>• <strong>Extreme Text Lengths</strong>: Ultra-short & chained paragraphs</li>
-        </ul>
-      </div>
-
-      <div class="cyber-card">
-        <h3 style="font-size: 1.1rem; color: var(--accent-emerald); margin-bottom: 0.75rem;">📊 Segmented Test Performance</h3>
-        <div style="margin-bottom: 1rem;">
-          <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.25rem;">
-            <span>Regular Test Samples (1,448)</span>
-            <strong style="color: var(--accent-emerald);">100.00% Accuracy (1.0000 F1)</strong>
+    <!-- AI Model Section -->
+    <section id="model" class="content-section">
+      <div class="section-card">
+        <h2 class="section-heading">AI Model</h2>
+        <div class="spec-grid">
+          <div class="spec-item">
+            <span class="spec-label">Model</span>
+            <span class="spec-value">BERT (bert-base-uncased)</span>
           </div>
-          <div class="meter-track"><div class="meter-fill normal" style="width: 100%;"></div></div>
-        </div>
-        <div>
-          <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.25rem;">
-            <span>Noisy Outlier Test Samples (52)</span>
-            <strong style="color: var(--accent-amber);">100.00% Accuracy (1.0000 F1)</strong>
+          <div class="spec-item">
+            <span class="spec-label">Task</span>
+            <span class="spec-value">Social-media threat classification</span>
           </div>
-          <div class="meter-track"><div class="meter-fill normal" style="width: 100%;"></div></div>
+          <div class="spec-item">
+            <span class="spec-label">Inference</span>
+            <span class="spec-value">ONNX Runtime</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Optimization</span>
+            <span class="spec-value">INT8 Quantization</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Backend</span>
+            <span class="spec-value">FastAPI</span>
+          </div>
         </div>
-        <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 1.25rem;">
-          The BERT subword tokenizer and contextual self-attention layers successfully retained correct classification despite aggressive syntactic noise.
-        </p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Section G: System Architecture -->
-  <section id="architecture" class="container">
-    <div class="section-header">
-      <span class="section-tag">System Design</span>
-      <h2 class="section-title">End-to-End System Pipeline</h2>
-      <p class="section-subtitle">
-        Visual flow of data processing from raw social text to classification inference.
-      </p>
-    </div>
+    <!-- How It Works Section -->
+    <section id="workflow" class="content-section">
+      <div class="section-card">
+        <h2 class="section-heading">How It Works</h2>
+        <div class="workflow-flow">
+          <div class="workflow-step">
+            <div class="step-circle">1</div>
+            <div class="step-label">Social Media Post</div>
+          </div>
+          <div class="workflow-arrow">→</div>
+          <div class="workflow-step">
+            <div class="step-circle">2</div>
+            <div class="step-label">Text Processing</div>
+          </div>
+          <div class="workflow-arrow">→</div>
+          <div class="workflow-step">
+            <div class="step-circle">3</div>
+            <div class="step-label">BERT Tokenizer</div>
+          </div>
+          <div class="workflow-arrow">→</div>
+          <div class="workflow-step">
+            <div class="step-circle">4</div>
+            <div class="step-label">BERT Model</div>
+          </div>
+          <div class="workflow-arrow">→</div>
+          <div class="workflow-step">
+            <div class="step-circle">5</div>
+            <div class="step-label">Threat Analysis</div>
+          </div>
+          <div class="workflow-arrow">→</div>
+          <div class="workflow-step">
+            <div class="step-circle">6</div>
+            <div class="step-label">Normal / Threat</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <div class="cyber-card">
-      <div class="arch-flow">
-        <div class="arch-node">
-          <div class="arch-node-title">1. Social Post</div>
-          <div class="arch-node-sub">Raw User Text</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-node">
-          <div class="arch-node-title">2. Preprocess</div>
-          <div class="arch-node-sub">Lightweight Cleaning</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-node">
-          <div class="arch-node-title">3. Tokenizer</div>
-          <div class="arch-node-sub">WordPiece [CLS]/[SEP]</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-node">
-          <div class="arch-node-title">4. BERT Encoder</div>
-          <div class="arch-node-sub">12 Layers (768 Dim)</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-node">
-          <div class="arch-node-title">5. [CLS] Head</div>
-          <div class="arch-node-sub">Linear Layer (2 Labels)</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-node">
-          <div class="arch-node-title">6. Prediction</div>
-          <div class="arch-node-sub">Normal vs Threat</div>
+    <!-- Technology Used Section -->
+    <section id="tech" class="content-section">
+      <div class="section-card">
+        <h2 class="section-heading">Technology Used</h2>
+        <div class="tech-pills">
+          <div class="tech-pill">Python</div>
+          <div class="tech-pill">BERT</div>
+          <div class="tech-pill">Hugging Face Transformers</div>
+          <div class="tech-pill">FastAPI</div>
+          <div class="tech-pill">ONNX Runtime</div>
+          <div class="tech-pill">HTML / CSS / JavaScript</div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <!-- Section H: Technology Stack -->
-  <section id="tech-stack" class="container">
-    <div class="section-header">
-      <span class="section-tag">Core Technologies</span>
-      <h2 class="section-title">Technology Stack</h2>
-      <p class="section-subtitle">
-        Production-ready tools powering the machine learning training and web deployment pipeline.
-      </p>
-    </div>
-
-    <div class="tech-grid">
-      <div class="tech-item">
-        <div class="tech-icon">🐍</div>
-        <div>
-          <div class="tech-info-name">Python 3.11+</div>
-          <div class="tech-info-role">Core Runtime</div>
-        </div>
-      </div>
-      <div class="tech-item">
-        <div class="tech-icon">🔥</div>
-        <div>
-          <div class="tech-info-name">PyTorch</div>
-          <div class="tech-info-role">Deep Learning Engine</div>
-        </div>
-      </div>
-      <div class="tech-item">
-        <div class="tech-icon">🤗</div>
-        <div>
-          <div class="tech-info-name">Transformers</div>
-          <div class="tech-info-role">Hugging Face BERT</div>
-        </div>
-      </div>
-      <div class="tech-item">
-        <div class="tech-icon">⚡</div>
-        <div>
-          <div class="tech-info-name">FastAPI</div>
-          <div class="tech-info-role">Async Backend REST API</div>
-        </div>
-      </div>
-      <div class="tech-item">
-        <div class="tech-icon">🚀</div>
-        <div>
-          <div class="tech-info-name">Uvicorn</div>
-          <div class="tech-info-role">ASGI Web Server</div>
-        </div>
-      </div>
-      <div class="tech-item">
-        <div class="tech-icon">📊</div>
-        <div>
-          <div class="tech-info-name">Scikit-Learn</div>
-          <div class="tech-info-role">Metrics & Splitting</div>
-        </div>
-      </div>
-      <div class="tech-item">
-        <div class="tech-icon">🐼</div>
-        <div>
-          <div class="tech-info-name">Pandas / NumPy</div>
-          <div class="tech-info-role">Data Engineering</div>
-        </div>
-      </div>
-      <div class="tech-item">
-        <div class="tech-icon">🌐</div>
-        <div>
-          <div class="tech-info-name">HTML5 / CSS3 / JS</div>
-          <div class="tech-info-role">Modern Cyber UI</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section I: Project Workflow -->
-  <section id="workflow" class="container">
-    <div class="section-header">
-      <span class="section-tag">Project Lifecycle</span>
-      <h2 class="section-title">10-Step Development Workflow</h2>
-      <p class="section-subtitle">
-        Systematic lifecycle from dataset engineering to web deployment.
-      </p>
-    </div>
-
-    <div class="workflow-timeline">
-      <div class="cyber-card step-card">
-        <div class="step-num">STEP 01</div>
-        <div class="step-title">Dataset Generation</div>
-        <div class="step-desc">10,000 synthetic posts with balanced classes and controlled outliers.</div>
-      </div>
-      <div class="cyber-card step-card">
-        <div class="step-num">STEP 02</div>
-        <div class="step-title">Preprocessing</div>
-        <div class="step-desc">Lightweight cleaning preserving punctuation and social formatting.</div>
-      </div>
-      <div class="cyber-card step-card">
-        <div class="step-num">STEP 03</div>
-        <div class="step-title">Stratified Splitting</div>
-        <div class="step-desc">70% Train, 15% Validation, 15% Test with fixed seed 42.</div>
-      </div>
-      <div class="cyber-card step-card">
-        <div class="step-num">STEP 04</div>
-        <div class="step-title">BERT Tokenization</div>
-        <div class="step-desc">WordPiece encoding with max sequence length of 128 tokens.</div>
-      </div>
-      <div class="cyber-card step-card">
-        <div class="step-num">STEP 05</div>
-        <div class="step-title">Model Training</div>
-        <div class="step-desc">AdamW optimizer, lr=2e-5, gradient accumulation, and mixed precision.</div>
-      </div>
-      <div class="cyber-card step-card">
-        <div class="step-num">STEP 06</div>
-        <div class="step-title">Model Validation</div>
-        <div class="step-desc">Evaluation after each epoch with automatic best checkpoint saving.</div>
-      </div>
-      <div class="cyber-card step-card">
-        <div class="step-num">STEP 07</div>
-        <div class="step-title">Test Evaluation</div>
-        <div class="step-desc">Rigorous metrics on 1,500 unseen held-out test posts.</div>
-      </div>
-      <div class="cyber-card step-card">
-        <div class="step-num">STEP 08</div>
-        <div class="step-title">Outlier Robustness</div>
-        <div class="step-desc">Separate performance validation on noisy social-media samples.</div>
-      </div>
-      <div class="cyber-card step-card">
-        <div class="step-num">STEP 09</div>
-        <div class="step-title">Real-Time Predictor</div>
-        <div class="step-desc">Standalone CLI and module inference pipeline for arbitrary text.</div>
-      </div>
-      <div class="cyber-card step-card">
-        <div class="step-num">STEP 10</div>
-        <div class="step-title">Web Application</div>
-        <div class="step-desc">FastAPI REST backend with modern cybersecurity web interface.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section J: Footer -->
+  <!-- Footer -->
   <footer class="footer">
-    <div class="container">
-      <div class="footer-title">Social Media Threat Intelligence System using BERT</div>
-      <div style="color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.8rem; margin-bottom: 0.5rem;">
-        AI & Data Science Project • Machine Learning Threat Classification
-      </div>
-      <p style="max-width: 600px; margin: 0 auto; font-size: 0.75rem; color: var(--text-muted);">
-        Disclaimer: This system is a threat-intelligence classification prototype that predicts learned linguistic threat patterns. It does not independently verify the factual truth of arbitrary real-world statements.
+    <div class="footer-container">
+      <p class="footer-title">Social Media Threat Intelligence System using BERT</p>
+      <p class="footer-subtitle">AI & Data Science Project</p>
+      <p class="footer-disclaimer">
+        AI-generated classification should be interpreted as a model prediction, not as a definitive assessment.
       </p>
     </div>
   </footer>
-
-  <!-- Modal for High-Res Plot Inspection -->
-  <div id="img-modal" class="img-modal">
-    <span id="modal-close" class="img-modal-close">&times;</span>
-    <img id="modal-img" class="img-modal-content" src="" alt="High Resolution Plot">
-  </div>
 
   <script src="/static/js/main.js"></script>
 </body>
