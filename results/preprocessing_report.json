@@ -1,0 +1,37 @@
+{
+    "total_raw_rows": 10000,
+    "missing_values": 0,
+    "empty_texts_before_cleaning": 0,
+    "empty_texts_after_cleaning": 0,
+    "duplicate_rows_removed": 0,
+    "final_cleaned_rows": 10000,
+    "class_distribution": {
+        "Normal": 2500,
+        "Fake News": 2500,
+        "Hate Speech": 2500,
+        "Spam": 2500
+    },
+    "total_outliers": 60,
+    "outlier_distribution": {
+        "Spam": 15,
+        "Fake News": 15,
+        "Normal": 15,
+        "Hate Speech": 15
+    },
+    "splits": {
+        "train_samples": 7000,
+        "val_samples": 1500,
+        "test_samples": 1500,
+        "train_ratio": 0.7,
+        "val_ratio": 0.15,
+        "test_ratio": 0.15,
+        "text_leakage_detected": false
+    },
+    "preprocessing_rules": [
+        "Unicode normalization (NFC) for proper Arabic ligature and diacritic rendering",
+        "Preserved Arabic script and Unicode character sets intact",
+        "Whitespace and control character normalization",
+        "Deduplication to prevent cross-split data leakage",
+        "Preserved punctuation and emojis for BERT contextual reasoning"
+    ]
+}

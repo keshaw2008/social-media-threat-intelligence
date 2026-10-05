@@ -1,0 +1,22 @@
+{
+  "test_accuracy": 1.0,
+  "threat_precision": 1.0,
+  "threat_recall": 1.0,
+  "threat_f1": 1.0,
+  "macro_f1": 1.0,
+  "weighted_f1": 1.0,
+  "confusion_matrix": [
+    [
+      750,
+      0
+    ],
+    [
+      0,
+      750
+    ]
+  ],
+  "regular_accuracy": 1.0,
+  "regular_macro_f1": 1.0,
+  "outlier_accuracy": 1.0,
+  "outlier_macro_f1": 1.0
+}

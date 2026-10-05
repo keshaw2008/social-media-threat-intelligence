@@ -1,0 +1,19 @@
+{
+  "model_name": "bert-base-uncased",
+  "epochs": 2,
+  "train_batch_size": 2,
+  "eval_batch_size": 2,
+  "gradient_accumulation_steps": 4,
+  "effective_batch_size": 8,
+  "max_length": 128,
+  "learning_rate": 2e-05,
+  "best_val_f1": 1.0,
+  "id2label": {
+    "0": "Normal",
+    "1": "Threat"
+  },
+  "label2id": {
+    "Normal": 0,
+    "Threat": 1
+  }
+}

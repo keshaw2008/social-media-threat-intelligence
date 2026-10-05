@@ -1,0 +1,34 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Training checkpoints and cache
+models/threat_bert/checkpoint-epoch-*/
+checkpoint-*/
+.cache/
+cache/
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Temporary and OS files
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# Never ignore model weights and configs
+!models/threat_bert/model_quantized.onnx
+!models/threat_bert/model.onnx
+!models/threat_bert/model.safetensors
+!models/threat_bert/*.json
+
+# Local BERT model files - use compressed ONNX model for deployment
+models/threat_bert/model.onnx
+models/threat_bert/model.safetensors
+models/threat_bert/model_quantized.onnx
