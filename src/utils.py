@@ -1,8 +1,6 @@
 import os
 import random
 import numpy as np
-import torch
-
 # Standard Label Mapping
 LABEL_MAP = {
     0: "Normal",
@@ -29,30 +27,40 @@ def set_seed(seed: int = 42) -> None:
     """
     random.seed(seed)
     np.random.seed(seed)
-    torch.manual_seed(seed)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed(seed)
-        torch.cuda.manual_seed_all(seed)
-        torch.backends.cudnn.deterministic = True
-        torch.backends.cudnn.benchmark = False
+    try:
+        import torch
+        torch.manual_seed(seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed(seed)
+            torch.cuda.manual_seed_all(seed)
+            torch.backends.cudnn.deterministic = True
+            torch.backends.cudnn.benchmark = False
+    except ImportError:
+        pass
     print(f"[INFO] Random seed set to {seed}")
 
 
-def get_device() -> torch.device:
+def get_device():
     """
     Detects and returns CUDA device if available, otherwise falls back to CPU.
     Prints device details.
     """
-    if torch.cuda.is_available():
-        device = torch.device("cuda")
-        gpu_name = torch.cuda.get_device_name(0)
-        gpu_memory = torch.cuda.get_device_properties(0).total_memory / (1024 ** 3)
-        print(f"[INFO] Device: CUDA")
-        print(f"[INFO] GPU: {gpu_name} (~{gpu_memory:.2f} GB VRAM)")
-    else:
-        device = torch.device("cpu")
-        print("[INFO] Device: CPU (CUDA is unavailable or disabled)")
-    return device
+    try:
+        import torch
+        if torch.cuda.is_available():
+            device = torch.device("cuda")
+            gpu_name = torch.cuda.get_device_name(0)
+            gpu_memory = torch.cuda.get_device_properties(0).total_memory / (1024 ** 3)
+            print(f"[INFO] Device: CUDA")
+            print(f"[INFO] GPU: {gpu_name} (~{gpu_memory:.2f} GB VRAM)")
+            return device
+        else:
+            device = torch.device("cpu")
+            print("[INFO] Device: CPU (CUDA is unavailable or disabled)")
+            return device
+    except ImportError:
+        print("[INFO] Device: CPU (PyTorch not installed, using lightweight inference)")
+        return "cpu"
 
 
 def ensure_directories():

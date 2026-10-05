@@ -2,15 +2,16 @@ import os
 import sys
 import time
 import json
+import gzip
+import shutil
 from pathlib import Path
 from contextlib import asynccontextmanager
 
-import torch
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
-from transformers import BertTokenizer, BertForSequenceClassification
+from transformers import BertTokenizer
 
 # Base directories using pathlib for cross-platform and cloud compatibility
 BASE_DIR = Path(__file__).resolve().parent
@@ -42,15 +43,27 @@ def load_model_on_startup():
     """
     Loads fine-tuned BERT model into memory.
     Prioritizes ultra-lightweight ONNX INT8 quantized model (~105MB, ~150MB RAM) for Render Free compatibility.
-    Falls back to PyTorch if ONNX is not available.
+    Auto-decompresses model_quantized.onnx.gz if model_quantized.onnx is not yet unpacked.
+    Falls back to PyTorch only if ONNX is not available.
     """
     if model_state["loaded"] and model_state["model"] is not None:
         return
 
     onnx_int8_file = MODELS_DIR / "model_quantized.onnx"
+    onnx_int8_gz = MODELS_DIR / "model_quantized.onnx.gz"
     onnx_fp32_file = MODELS_DIR / "model.onnx"
 
-    # 1. Preferred: ONNX INT8 Quantized Model (~105 MB)
+    # Auto-decompress .gz if the uncompressed .onnx is missing
+    if not onnx_int8_file.exists() and onnx_int8_gz.exists():
+        print(f"[STARTUP] Decompressing {onnx_int8_gz} -> {onnx_int8_file}...", flush=True)
+        try:
+            with gzip.open(str(onnx_int8_gz), "rb") as f_in, open(str(onnx_int8_file), "wb") as f_out:
+                shutil.copyfileobj(f_in, f_out)
+            print("[STARTUP] Decompression complete.", flush=True)
+        except Exception as e:
+            print(f"[STARTUP ERROR] Decompression failed: {e}", flush=True)
+
+    # 1. Preferred: ONNX INT8 Quantized Model (~105 MB, ~150 MB RAM)
     if onnx_int8_file.exists():
         try:
             import onnxruntime as ort
@@ -66,7 +79,7 @@ def load_model_on_startup():
             model_state["tokenizer"] = tokenizer
             model_state["device_name"] = "CPU (ONNX INT8 Quantized)"
             model_state["loaded"] = True
-            print("[STARTUP] ONNX INT8 Quantized BERT loaded successfully (RAM-optimized for 512MB limit).", flush=True)
+            print("[STARTUP] ONNX INT8 Quantized BERT loaded successfully (Render Free 512MB RAM safe).", flush=True)
             return
         except Exception as e:
             print(f"[STARTUP WARNING] ONNX INT8 load error: {e}. Falling back...", flush=True)
@@ -91,13 +104,21 @@ def load_model_on_startup():
         except Exception as e:
             print(f"[STARTUP WARNING] ONNX FP32 load error: {e}. Falling back...", flush=True)
 
-    # 3. Fallback: PyTorch Safetensors Model
+    # 3. Fallback: PyTorch Safetensors Model (Only imported when ONNX is absent)
     if not (MODELS_DIR / "config.json").exists():
         raise FileNotFoundError(
             f"Trained BERT model not found at {MODELS_DIR}. Ensure model files exist."
         )
 
-    import torch
+    try:
+        import torch
+        from transformers import BertForSequenceClassification
+    except ImportError as e:
+        raise RuntimeError(
+            f"PyTorch fallback requested but torch is not installed: {e}. "
+            f"Ensure {onnx_int8_file} or {onnx_int8_gz} is present for ONNX inference."
+        )
+
     if torch.cuda.is_available():
         device = torch.device("cuda")
         device_name = f"CUDA ({torch.cuda.get_device_name(0)})"
@@ -317,8 +338,6 @@ async def get_dataset_stats():
             1: "Threat"
         }
     }
-
-
 
 
 if __name__ == "__main__":
