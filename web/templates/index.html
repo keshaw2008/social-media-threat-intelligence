@@ -3,115 +3,199 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Social Media Threat Intelligence</title>
+  <title>Social Media Threat Intelligence — BERT AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
 
+  <!-- Ambient Glow Orbs -->
+  <div class="glow-orb glow-orb-1"></div>
+  <div class="glow-orb glow-orb-2"></div>
+  <div class="glow-orb glow-orb-3"></div>
+
   <!-- Navigation -->
   <nav class="navbar">
     <div class="nav-container">
-      <a href="#analyzer" class="nav-brand">
-        <span class="brand-icon">🛡️</span>
-        <span class="brand-text">Social Media Threat Intelligence</span>
+      <a href="#hero" class="nav-brand">
+        <span class="brand-badge-icon">⚡</span>
+        <span class="brand-text">Threat<span class="gradient-text">Intel</span> BERT</span>
       </a>
       <div class="nav-links">
-        <a href="#analyzer" class="nav-link">Home</a>
+        <a href="#analyzer" class="nav-link">Analyzer</a>
         <a href="#about" class="nav-link">About</a>
         <a href="#model" class="nav-link">AI Model</a>
         <a href="#workflow" class="nav-link">How It Works</a>
+        <a href="#tech" class="nav-link">Tech</a>
       </div>
       <div class="nav-status" id="system-status">
-        <span class="status-dot"></span> Online
+        <span class="pulse-dot"></span>
+        <span>ONNX INT8 Active</span>
       </div>
     </div>
   </nav>
 
-  <!-- Main Analyzer (Hero Section) -->
-  <main class="main-content">
-    <section id="analyzer" class="hero-section">
-      <div class="hero-header">
-        <h1 class="hero-title">Social Media Threat Intelligence</h1>
-        <p class="hero-subtitle">AI-powered analysis of social-media content using BERT.</p>
-        <p class="hero-desc">
-          Analyze a social-media post and identify whether its linguistic patterns are classified as <strong>Normal</strong> or potentially <strong>Threat</strong>-related.
-        </p>
+  <main class="main-container">
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>AI • BERT • THREAT DETECTION</span>
       </div>
+      
+      <h1 class="hero-title">
+        Social Media <span class="gradient-text">Threat Intelligence</span>
+      </h1>
+      
+      <p class="hero-subtitle">
+        AI-powered detection of potentially threatening social-media content
+      </p>
+      
+      <p class="hero-description">
+        Analyze English social-media posts using a fine-tuned <strong>BERT model</strong> and identify whether the content follows <span class="highlight-normal">normal</span> or potentially <span class="highlight-threat">threatening</span> linguistic patterns.
+      </p>
+    </section>
 
-      <!-- Interactive Analyzer Card -->
-      <div class="analyzer-card">
-        <div class="input-header">
-          <label for="text-input" class="input-label">Social Media Post</label>
-          <div class="sample-chips">
-            <span class="chips-title">Quick Samples:</span>
-            <button type="button" class="chip" data-sample="Enjoying a quiet cup of coffee this morning with a good book.">☕ Benign Post</button>
-            <button type="button" class="chip" data-sample="URGENT: Your account is suspended. Click http://verify-bank-update.xyz to prevent immediate permanent closure.">⚠️ Phishing Scam</button>
-            <button type="button" class="chip" data-sample="BREAKING: Official secret documents leaked revealing dangerous chemical contamination in city water! Share fast!">🚨 Disinformation</button>
+    <!-- Main Analysis Card -->
+    <section id="analyzer" class="analyzer-section">
+      <div class="glass-card analyzer-card">
+        <div class="card-header">
+          <div class="header-icon">🛡️</div>
+          <div>
+            <h2 class="card-title">Analyze a Social Media Post</h2>
+            <p class="card-subtitle">Enter a social-media post below and let the AI analyze its linguistic patterns.</p>
           </div>
         </div>
 
-        <div class="textarea-wrapper">
+        <!-- Sample Post Chips -->
+        <div class="samples-wrapper">
+          <span class="samples-label">Try a sample:</span>
+          <div class="chips-container">
+            <button type="button" class="sample-chip chip-normal" data-sample="Had a wonderful evening with my friends!">
+              <span class="chip-icon">☕</span> Had a wonderful evening with my friends!
+            </button>
+            <button type="button" class="sample-chip chip-threat" data-sample="Congratulations! You won a free prize. Click the link now!">
+              <span class="chip-icon">🎁</span> Congratulations! You won a free prize. Click the link now!
+            </button>
+            <button type="button" class="sample-chip chip-threat" data-sample="URGENT: Your bank account is locked. Verify at http://bank-secure-login.xyz immediately!">
+              <span class="chip-icon">⚠️</span> URGENT: Your bank account is locked...
+            </button>
+          </div>
+        </div>
+
+        <!-- Textarea with Character Counter -->
+        <div class="textarea-container">
           <textarea 
-            id="text-input" 
-            class="post-textarea" 
+            id="post-input" 
+            class="custom-textarea" 
             rows="4" 
-            placeholder="Enter or paste a social-media post..."
+            placeholder="Enter a social-media post to analyze..."
           ></textarea>
+          <div class="textarea-footer">
+            <span id="char-counter" class="char-counter">0 characters</span>
+            <span id="validation-msg" class="validation-error">Please enter a social-media post to analyze.</span>
+          </div>
         </div>
 
-        <div id="validation-msg" class="validation-msg">Please enter a social-media post to analyze.</div>
-
-        <div class="action-row">
-          <button id="clear-btn" class="btn btn-secondary" type="button">Clear</button>
-          <button id="analyze-btn" class="btn btn-primary" type="button">Analyze Post</button>
+        <!-- Action Buttons -->
+        <div class="button-row">
+          <button id="clear-btn" class="btn btn-glass" type="button">
+            <span>Clear</span>
+          </button>
+          <button id="analyze-btn" class="btn btn-gradient" type="button">
+            <span class="btn-spinner" id="btn-spinner"></span>
+            <span id="btn-text">Analyze Post</span>
+            <span class="btn-arrow">→</span>
+          </button>
         </div>
 
-        <!-- Result Container -->
-        <div id="result-container" class="result-container">
+        <!-- Result Section (Appears after analysis) -->
+        <div id="result-wrapper" class="result-wrapper" style="display: none;">
           <div class="result-divider"></div>
           
           <div class="result-header">
-            <span class="result-tag">ANALYSIS RESULT</span>
+            <span class="result-badge-label">ANALYSIS RESULT</span>
+            <span id="result-latency" class="latency-pill">⚡ 0.0 ms</span>
           </div>
 
-          <div class="result-grid">
-            <div class="result-stat-box">
-              <span class="stat-label">Prediction</span>
-              <div id="result-prediction" class="stat-value prediction-badge normal">NORMAL</div>
+          <div class="result-card-inner" id="result-card-inner">
+            <!-- Verdict Badge Column -->
+            <div class="verdict-col">
+              <span class="col-title">PREDICTION</span>
+              <div id="prediction-badge" class="verdict-badge verdict-normal">
+                <span id="verdict-icon" class="verdict-icon">🛡️</span>
+                <span id="verdict-text" class="verdict-text">NORMAL</span>
+              </div>
             </div>
 
-            <div class="result-stat-box">
-              <span class="stat-label">Confidence</span>
-              <div class="confidence-display">
-                <span id="result-confidence" class="stat-value">99.85%</span>
+            <!-- Confidence Bar Column -->
+            <div class="confidence-col">
+              <div class="confidence-header">
+                <span class="col-title">CONFIDENCE</span>
+                <span id="confidence-value" class="confidence-pct">99.85%</span>
               </div>
-              <div class="confidence-bar-bg">
-                <div id="confidence-bar" class="confidence-bar-fill normal" style="width: 99.85%;"></div>
+              <div class="meter-track">
+                <div id="meter-bar" class="meter-bar meter-normal" style="width: 99.85%;"></div>
+              </div>
+              <div class="class-distribution">
+                <span>Normal: <strong id="prob-normal">99.85%</strong></span>
+                <span>Threat: <strong id="prob-threat">0.15%</strong></span>
               </div>
             </div>
           </div>
 
-          <p id="result-explanation" class="result-explanation">
-            The model classifies this post as normal, safe social media communication without threat patterns.
-          </p>
+          <!-- Linguistic Pattern Explanation -->
+          <div class="explanation-box" id="explanation-box">
+            <span class="explanation-icon">💡</span>
+            <p id="explanation-text" class="explanation-text">
+              The model classifies this post as normal, safe social media communication without threat patterns.
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- About the Project Section -->
     <section id="about" class="content-section">
-      <div class="section-card">
-        <h2 class="section-heading">About the Project</h2>
-        <p class="section-text">
-          Social Media Threat Intelligence System is an AI-based application designed to analyze English social-media content and identify potentially threatening or malicious linguistic patterns.
+      <div class="glass-card section-card">
+        <div class="section-title-wrap">
+          <span class="section-tag">OVERVIEW</span>
+          <h2 class="section-title">About the Project</h2>
+        </div>
+        
+        <p class="section-paragraph">
+          This project uses a fine-tuned <strong>BERT model</strong> to analyze English social-media posts and classify them as <strong>Normal</strong> or <strong>Threat</strong>. The system is designed as a threat-intelligence prototype that identifies learned linguistic patterns associated with potentially malicious or harmful social-media content.
         </p>
-        <div class="scope-callout">
-          <span class="callout-icon">ℹ️</span>
-          <p class="callout-text">
-            The system is designed as a threat-intelligence classification prototype. It identifies patterns learned during model training and does not independently verify whether information is factually true or whether a person is actually dangerous.
+
+        <div class="threat-scope-box">
+          <div class="scope-header">
+            <span class="scope-icon">🎯</span>
+            <span class="scope-title">Conceptual Threat Coverage</span>
+          </div>
+          <p class="scope-desc">
+            Threat-related patterns conceptually include <strong>fake-news-like content</strong>, <strong>hate-speech-like patterns</strong>, and <strong>spam/scam-like content</strong>.
+          </p>
+        </div>
+
+        <div class="binary-mapping-grid">
+          <div class="binary-card binary-normal">
+            <span class="binary-code">Class 0</span>
+            <span class="binary-label">Normal</span>
+            <p class="binary-desc">Everyday communication, benign expressions, news sharing, hobbies, and personal thoughts.</p>
+          </div>
+          <div class="binary-card binary-threat">
+            <span class="binary-code">Class 1</span>
+            <span class="binary-label">Threat</span>
+            <p class="binary-desc">Hostile harassment, fraudulent scam URLs, financial extortion, phishing, and toxic claims.</p>
+          </div>
+        </div>
+
+        <div class="disclaimer-callout">
+          <span class="disclaimer-icon">⚠️</span>
+          <p class="disclaimer-text">
+            <strong>Prototype Disclaimer:</strong> The system identifies learned linguistic patterns and does not independently verify whether a claim is factually true or whether a person is actually dangerous.
           </p>
         </div>
       </div>
@@ -119,28 +203,48 @@
 
     <!-- AI Model Section -->
     <section id="model" class="content-section">
-      <div class="section-card">
-        <h2 class="section-heading">AI Model</h2>
-        <div class="spec-grid">
-          <div class="spec-item">
-            <span class="spec-label">Model</span>
-            <span class="spec-value">BERT (bert-base-uncased)</span>
+      <div class="glass-card section-card">
+        <div class="section-title-wrap">
+          <span class="section-tag">ARCHITECTURE</span>
+          <h2 class="section-title">AI Model</h2>
+          <p class="section-subtitle-text">High-performance transformer architecture optimized for ultra-low latency inference.</p>
+        </div>
+
+        <div class="model-cards-grid">
+          <div class="model-card card-gradient-1">
+            <div class="model-card-icon">🧠</div>
+            <div class="model-card-content">
+              <span class="model-label">BERT</span>
+              <span class="model-value">bert-base-uncased</span>
+              <span class="model-sub">110M Transformer Parameters</span>
+            </div>
           </div>
-          <div class="spec-item">
-            <span class="spec-label">Task</span>
-            <span class="spec-value">Social-media threat classification</span>
+
+          <div class="model-card card-gradient-2">
+            <div class="model-card-icon">🎯</div>
+            <div class="model-card-content">
+              <span class="model-label">Task</span>
+              <span class="model-value">Binary Text Classification</span>
+              <span class="model-sub">0 (Normal) vs 1 (Threat)</span>
+            </div>
           </div>
-          <div class="spec-item">
-            <span class="spec-label">Inference</span>
-            <span class="spec-value">ONNX Runtime</span>
+
+          <div class="model-card card-gradient-3">
+            <div class="model-card-icon">⚡</div>
+            <div class="model-card-content">
+              <span class="model-label">Inference</span>
+              <span class="model-value">ONNX Runtime + INT8</span>
+              <span class="model-sub">Quantized (~105 MB footprint)</span>
+            </div>
           </div>
-          <div class="spec-item">
-            <span class="spec-label">Optimization</span>
-            <span class="spec-value">INT8 Quantization</span>
-          </div>
-          <div class="spec-item">
-            <span class="spec-label">Backend</span>
-            <span class="spec-value">FastAPI</span>
+
+          <div class="model-card card-gradient-4">
+            <div class="model-card-icon">🚀</div>
+            <div class="model-card-content">
+              <span class="model-label">Backend</span>
+              <span class="model-value">FastAPI</span>
+              <span class="model-sub">Asynchronous Python REST API</span>
+            </div>
           </div>
         </div>
       </div>
@@ -148,37 +252,54 @@
 
     <!-- How It Works Section -->
     <section id="workflow" class="content-section">
-      <div class="section-card">
-        <h2 class="section-heading">How It Works</h2>
-        <div class="workflow-flow">
-          <div class="workflow-step">
-            <div class="step-circle">1</div>
-            <div class="step-label">Social Media Post</div>
+      <div class="glass-card section-card">
+        <div class="section-title-wrap">
+          <span class="section-tag">PIPELINE</span>
+          <h2 class="section-title">How It Works</h2>
+          <p class="section-subtitle-text">End-to-end natural language processing pipeline from raw text to classification.</p>
+        </div>
+
+        <div class="workflow-grid">
+          <div class="workflow-step-card">
+            <div class="step-num">01</div>
+            <div class="step-icon-wrap">📝</div>
+            <h3 class="step-name">Social Media Post</h3>
+            <p class="step-desc">User inputs raw English text from online social media.</p>
           </div>
-          <div class="workflow-arrow">→</div>
-          <div class="workflow-step">
-            <div class="step-circle">2</div>
-            <div class="step-label">Text Processing</div>
+
+          <div class="workflow-step-card">
+            <div class="step-num">02</div>
+            <div class="step-icon-wrap">⚙️</div>
+            <h3 class="step-name">Text Processing</h3>
+            <p class="step-desc">Sanitization, whitespace normalization, and validation.</p>
           </div>
-          <div class="workflow-arrow">→</div>
-          <div class="workflow-step">
-            <div class="step-circle">3</div>
-            <div class="step-label">BERT Tokenizer</div>
+
+          <div class="workflow-step-card">
+            <div class="step-num">03</div>
+            <div class="step-icon-wrap">🔢</div>
+            <h3 class="step-name">BERT Tokenization</h3>
+            <p class="step-desc">Converts text into subword token IDs & attention masks.</p>
           </div>
-          <div class="workflow-arrow">→</div>
-          <div class="workflow-step">
-            <div class="step-circle">4</div>
-            <div class="step-label">BERT Model</div>
+
+          <div class="workflow-step-card">
+            <div class="step-num">04</div>
+            <div class="step-icon-wrap">🧠</div>
+            <h3 class="step-name">BERT Model</h3>
+            <p class="step-desc">12-layer bidirectional transformer extracts deep contextual representations.</p>
           </div>
-          <div class="workflow-arrow">→</div>
-          <div class="workflow-step">
-            <div class="step-circle">5</div>
-            <div class="step-label">Threat Analysis</div>
+
+          <div class="workflow-step-card">
+            <div class="step-num">05</div>
+            <div class="step-icon-wrap">📊</div>
+            <h3 class="step-name">Threat Classification</h3>
+            <p class="step-desc">Linear classification head computes softmax probability distribution.</p>
           </div>
-          <div class="workflow-arrow">→</div>
-          <div class="workflow-step">
-            <div class="step-circle">6</div>
-            <div class="step-label">Normal / Threat</div>
+
+          <div class="workflow-step-card">
+            <div class="step-num">06</div>
+            <div class="step-icon-wrap">🎯</div>
+            <h3 class="step-name">Normal / Threat</h3>
+            <p class="step-desc">High-confidence decision rendered with real-time explanation.</p>
           </div>
         </div>
       </div>
@@ -186,15 +307,21 @@
 
     <!-- Technology Used Section -->
     <section id="tech" class="content-section">
-      <div class="section-card">
-        <h2 class="section-heading">Technology Used</h2>
-        <div class="tech-pills">
-          <div class="tech-pill">Python</div>
-          <div class="tech-pill">BERT</div>
-          <div class="tech-pill">Hugging Face Transformers</div>
-          <div class="tech-pill">FastAPI</div>
-          <div class="tech-pill">ONNX Runtime</div>
-          <div class="tech-pill">HTML / CSS / JavaScript</div>
+      <div class="glass-card section-card">
+        <div class="section-title-wrap">
+          <span class="section-tag">STACK</span>
+          <h2 class="section-title">Technology Used</h2>
+        </div>
+
+        <div class="tech-grid">
+          <div class="tech-badge"><span class="tech-icon">🐍</span> Python</div>
+          <div class="tech-badge"><span class="tech-icon">🤗</span> BERT</div>
+          <div class="tech-badge"><span class="tech-icon">🔥</span> PyTorch</div>
+          <div class="tech-badge"><span class="tech-icon">⚡</span> ONNX Runtime</div>
+          <div class="tech-badge"><span class="tech-icon">⚡</span> FastAPI</div>
+          <div class="tech-badge"><span class="tech-icon">🌐</span> HTML5</div>
+          <div class="tech-badge"><span class="tech-icon">🎨</span> CSS3</div>
+          <div class="tech-badge"><span class="tech-icon">✨</span> JavaScript</div>
         </div>
       </div>
     </section>
@@ -203,10 +330,14 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-container">
-      <p class="footer-title">Social Media Threat Intelligence System using BERT</p>
-      <p class="footer-subtitle">AI & Data Science Project</p>
+      <div class="footer-brand">
+        <span class="footer-logo">🛡️</span>
+        <span class="footer-title">Social Media Threat Intelligence System using BERT</span>
+      </div>
+      <p class="footer-desc">AI-powered prototype for social-media threat pattern detection</p>
+      <div class="footer-divider"></div>
       <p class="footer-disclaimer">
-        AI-generated classification should be interpreted as a model prediction, not as a definitive assessment.
+        Built for educational and demonstration purposes. AI-generated classification should be interpreted as a model prediction, not as a definitive assessment.
       </p>
     </div>
   </footer>
