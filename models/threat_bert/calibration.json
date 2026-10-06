@@ -1,0 +1,11 @@
+{
+  "method": "conservative_temperature_scaling",
+  "temperature": 3.549,
+  "validation_samples": 1500,
+  "max_validation_logit_diff": 10.4499,
+  "target_max_confidence": 0.95,
+  "validation_max_confidence": 0.95,
+  "validation_mean_confidence": 0.9143,
+  "uncalibrated_nll": 0.6961,
+  "calibrated_nll": 0.2871
+}

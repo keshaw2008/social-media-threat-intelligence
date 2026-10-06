@@ -35,19 +35,31 @@ model_state = {
     "device_name": "CPU (ONNX INT8 Quantized)",
     "model_name": "bert-base-uncased",
     "max_length": 128,
+    "temperature": 3.5490,  # Conservative temperature scaling parameter fitted on validation set
     "loaded": False
 }
 
 
 def load_model_on_startup():
     """
-    Loads fine-tuned BERT model into memory.
+    Loads fine-tuned BERT model into memory and loads validation-fitted calibration parameter.
     Prioritizes ultra-lightweight ONNX INT8 quantized model (~105MB, ~150MB RAM) for Render Free compatibility.
     Auto-decompresses model_quantized.onnx.gz if model_quantized.onnx is not yet unpacked.
     Falls back to PyTorch only if ONNX is not available.
     """
     if model_state["loaded"] and model_state["model"] is not None:
         return
+
+    # Load Temperature Scaling Calibration Metadata
+    calib_file = MODELS_DIR / "calibration.json"
+    if calib_file.exists():
+        try:
+            with open(calib_file, "r", encoding="utf-8") as f:
+                calib_meta = json.load(f)
+                model_state["temperature"] = float(calib_meta.get("temperature", 3.5490))
+                print(f"[STARTUP] Loaded conservative probability calibration temperature T = {model_state['temperature']:.4f}", flush=True)
+        except Exception as e:
+            print(f"[STARTUP WARNING] Could not load calibration metadata: {e}", flush=True)
 
     onnx_int8_file = MODELS_DIR / "model_quantized.onnx"
     onnx_int8_gz = MODELS_DIR / "model_quantized.onnx.gz"
@@ -253,6 +265,10 @@ async def predict_threat(payload: PredictionRequest):
         return_tensors="np" if engine == "onnx" else "pt"
     )
 
+    temperature = float(model_state.get("temperature", 3.5490))
+    if temperature <= 0.01:
+        temperature = 1.0
+
     if engine == "onnx":
         import numpy as np
         input_ids = encoding["input_ids"].astype(np.int64)
@@ -260,10 +276,11 @@ async def predict_threat(payload: PredictionRequest):
 
         ort_outputs = model.run(None, {"input_ids": input_ids, "attention_mask": attention_mask})
         logits = ort_outputs[0]
-        # Softmax over logits
-        exp_logits = np.exp(logits - np.max(logits, axis=-1, keepdims=True))
+        # Temperature-scaled probability calibration
+        scaled_logits = logits / temperature
+        exp_logits = np.exp(scaled_logits - np.max(scaled_logits, axis=-1, keepdims=True))
         probs = (exp_logits / np.sum(exp_logits, axis=-1, keepdims=True))[0]
-        pred_idx = int(np.argmax(probs))
+        pred_idx = int(np.argmax(logits))
     else:
         import torch
         device = model_state["device"]
@@ -273,7 +290,8 @@ async def predict_threat(payload: PredictionRequest):
         with torch.no_grad():
             outputs = model(input_ids=input_ids, attention_mask=attention_mask)
             logits = outputs.logits
-            probs = torch.softmax(logits, dim=1).squeeze(0).cpu().numpy()
+            # Temperature-scaled probability calibration
+            probs = torch.softmax(logits / temperature, dim=1).squeeze(0).cpu().numpy()
             pred_idx = int(torch.argmax(logits, dim=1).item())
 
     inference_ms = (time.perf_counter() - start_time) * 1000.0

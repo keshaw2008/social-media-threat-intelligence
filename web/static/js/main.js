@@ -136,12 +136,13 @@ document.addEventListener('DOMContentLoaded', () => {
     confidenceText.textContent = `${conf.toFixed(2)}%`;
     progressBarFill.style.width = `${Math.min(100, Math.max(0, conf))}%`;
 
-    // Class Probabilities
+    // Class Probabilities (API returns values already scaled to percentage: e.g., 0.02 for 0.02%, 99.98 for 99.98%)
     if (data.probabilities) {
-      const pNormal = (data.probabilities.Normal * 100).toFixed(2);
-      const pThreat = (data.probabilities.Threat * 100).toFixed(2);
-      probNormalVal.textContent = `${pNormal}%`;
-      probThreatVal.textContent = `${pThreat}%`;
+      const pNormal = Number(data.probabilities.Normal);
+      const pThreat = Number(data.probabilities.Threat);
+
+      probNormalVal.textContent = `${pNormal.toFixed(2)}%`;
+      probThreatVal.textContent = `${pThreat.toFixed(2)}%`;
     }
   }
 });

@@ -98,6 +98,18 @@ def predict_text(text: str) -> dict:
 
     model, tokenizer, device = load_threat_model()
 
+    # Load calibration temperature if available
+    import json
+    calib_file = os.path.join(MODELS_DIR, "calibration.json")
+    temperature = 3.5490
+    if os.path.exists(calib_file):
+        try:
+            with open(calib_file, "r", encoding="utf-8") as f:
+                calib_meta = json.load(f)
+                temperature = float(calib_meta.get("temperature", 3.5490))
+        except Exception:
+            temperature = 3.5490
+
     if _engine == "onnx":
         encoding = tokenizer(
             text.strip(),
@@ -111,9 +123,11 @@ def predict_text(text: str) -> dict:
 
         ort_out = model.run(None, {"input_ids": input_ids, "attention_mask": attention_mask})
         logits = ort_out[0]
-        exp_logits = np.exp(logits - np.max(logits, axis=-1, keepdims=True))
+        # Temperature-scaled probabilities
+        scaled_logits = logits / temperature
+        exp_logits = np.exp(scaled_logits - np.max(scaled_logits, axis=-1, keepdims=True))
         probs = (exp_logits / np.sum(exp_logits, axis=-1, keepdims=True))[0]
-        pred_idx = int(np.argmax(probs))
+        pred_idx = int(np.argmax(logits))
     else:
         import torch
         encoding = tokenizer(
@@ -129,7 +143,8 @@ def predict_text(text: str) -> dict:
         with torch.no_grad():
             outputs = model(input_ids=input_ids, attention_mask=attention_mask)
             logits = outputs.logits
-            probs = torch.softmax(logits, dim=1).squeeze(0).cpu().numpy()
+            # Temperature-scaled probabilities
+            probs = torch.softmax(logits / temperature, dim=1).squeeze(0).cpu().numpy()
             pred_idx = int(torch.argmax(logits, dim=1).item())
 
     pred_label = LABEL_MAP[pred_idx]
