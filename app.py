@@ -81,7 +81,7 @@ with gr.Blocks(title="Social Media Threat Intelligence System using BERT") as de
         f"""
         # 🛡️ Social Media Threat Intelligence System
         ### Fine-Tuned BERT (`bert-base-uncased`) Binary Threat Detector
-        **AI-powered detection of potentially harmful social-media content** | Hardware Device: `{device_info}`
+        **Automated classification of social-media content** | Hardware Device: `{device_info}`
         """,
         elem_id="main-header"
     )
@@ -104,12 +104,9 @@ with gr.Blocks(title="Social Media Threat Intelligence System using BERT") as de
                     gr.Examples(
                         examples=[
                             ["Had a great day with my friends today."],
-                            ["Congratulations! You won a $5,000 gift voucher. Click http://claim-rewards-verify77.xyz/win immediately!"],
-                            ["Starting my morning with a warm cup of green tea and peaceful music."],
-                            ["URGENT ALERT: Whistleblower leaks verified documents showing contaminated water supply. Share now!"],
-                            ["Hey @target_user_88 you are disgusting vermin and should be hunted down."],
-                            ["🚨🚨🚨 #breaking URGENT claim NOW http://crypto-giveaway-official-event.org/bonus 💥💥 @user_992"],
-                            ["Baking fresh chocolate chip cookies makes the kitchen smell wonderful."]
+                            ["Congratulations! You won a free phone. Click this link immediately!"],
+                            ["We are going to totally destroy the enemy squad in Valorant tonight!"],
+                            ["We know where your children go to school in Chicago. Keep your mouth shut."]
                         ],
                         inputs=input_box,
                         label="Quick Sample Inputs (Click to test)"
@@ -147,25 +144,25 @@ with gr.Blocks(title="Social Media Threat Intelligence System using BERT") as de
                     """
                     | Metric | Score | Support |
                     | :--- | :---: | :---: |
-                    | **Test Accuracy** | **100.00%** (1.0000) | 1,500 posts |
-                    | **Threat Precision** | **100.00%** (1.0000) | 750 threats |
-                    | **Threat Recall** | **100.00%** (1.0000) | 750 threats |
-                    | **Threat F1-Score** | **100.00%** (1.0000) | 750 threats |
-                    | **Macro F1** | **100.00%** (1.0000) | 1,500 posts |
-                    | **Weighted F1** | **100.00%** (1.0000) | 1,500 posts |
+                    | **Test Accuracy** | **88.00%** | 1,500 posts |
+                    | **Threat Precision** | **82.02%** | 750 threats |
+                    | **Threat Recall** | **97.33%** | 750 threats |
+                    | **Threat F1-Score** | **89.02%** | 750 threats |
+                    | **Macro F1** | **87.89%** | 1,500 posts |
+                    | **Weighted F1** | **87.89%** | 1,500 posts |
                     """
                 )
                 gr.Markdown(
                     """
                     ### 🎯 Confusion Matrix (1,500 Test Samples)
-                    * **True Negatives (TN)**: `750` (Actual Normal → Predicted Normal)
-                    * **False Positives (FP)**: `0` (Actual Normal → Predicted Threat)
-                    * **False Negatives (FN)**: `0` (Actual Threat → Predicted Normal)
-                    * **True Positives (TP)**: `750` (Actual Threat → Predicted Threat)
+                    * **True Negatives (TN)**: `590` (Actual Normal → Predicted Normal)
+                    * **False Positives (FP)**: `160` (Actual Normal → Predicted Threat)
+                    * **False Negatives (FN)**: `20` (Actual Threat → Predicted Normal)
+                    * **True Positives (TP)**: `730` (Actual Threat → Predicted Threat)
 
                     ### ⚡ Outlier Robustness Breakdown
-                    * **Regular Test Samples (1,448)**: `100.00%` Accuracy (1.0000 F1)
-                    * **Noisy Outlier Test Samples (52)**: `100.00%` Accuracy (1.0000 F1)
+                    * **Regular Test Samples (1,421)**: `88.04%` Accuracy (87.92% Macro F1)
+                    * **Noisy Outlier Test Samples (79)**: `87.34%` Accuracy (87.32% Macro F1)
                     """
                 )
 
@@ -184,15 +181,16 @@ with gr.Blocks(title="Social Media Threat Intelligence System using BERT") as de
         with gr.TabItem("📈 Dataset & Pipeline"):
             gr.Markdown(
                 """
-                ### 📁 Synthetic Dataset Engineering (10,000 Posts)
+                ### 📁 Dataset Collection & Preprocessing (10,000 Posts)
+                * **Source**: Publicly available Kaggle datasets covering Fake News, Hate Speech, Spam, and Normal posts.
                 * **Total Records**: 10,000 balanced English posts
                 * **Normal Posts (`label=0`)**: 5,000 samples (50.0%)
                 * **Threat Posts (`label=1`)**: 5,000 samples (50.0%)
-                * **Noisy Outliers (`is_outlier=1`)**: 350 samples (3.5%)
+                * **Outlier Analysis Samples**: 350 noisy samples (3.5%)
                 * **Stratified Split**: 70% Train (7,000), 15% Validation (1,500), 15% Test (1,500) with fixed seed `42`.
 
                 ### 🏗️ End-to-End System Pipeline
-                `Raw Social Post` → `Lightweight Cleaning` → `WordPiece Tokenizer` → `BERT Base (12 Layers, 768 Dim)` → `[CLS] Representation` → `Linear Classification Head` → `Softmax Normal / Threat Verdict`
+                `Public Dataset Collection` → `Integration & Cleaning` → `WordPiece Tokenizer` → `BERT Base (12 Layers, 768 Dim)` → `[CLS] Representation` → `Linear Classification Head` → `Softmax Normal / Threat Verdict`
                 """
             )
             with gr.Row():
@@ -220,14 +218,14 @@ with gr.Blocks(title="Social Media Threat Intelligence System using BERT") as de
                 ### ⚠️ Notice & Limitations
                 * *This system is a **threat-intelligence classification prototype** trained on learned linguistic patterns.*
                 * *It identifies patterns characteristic of malicious posts (scams, phishing, targeted hostility, fake emergency claims).*
-                * *It does not independently verify the factual truth of arbitrary real-world statements.*
+                * *It does not independently verify whether a post is factually true or whether a person is actually dangerous.*
                 """
             )
 
     gr.Markdown(
         """
         ---
-        **Social Media Threat Intelligence System using BERT** • *AI & Data Science Project*
+        **Social Media Threat Intelligence System using BERT** • *Academic Project*
         """
     )
 

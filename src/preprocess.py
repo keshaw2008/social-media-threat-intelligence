@@ -34,10 +34,12 @@ def clean_text_lightweight(text: str) -> str:
 
 
 def preprocess_and_split():
-    raw_path = os.path.join(RAW_DATA_DIR, "synthetic_social_media_posts.csv")
+    raw_path = os.path.join(RAW_DATA_DIR, "collected_social_media_posts.csv")
+    if not os.path.exists(raw_path):
+        raw_path = os.path.join(DATA_DIR, "final_social_media_threat_dataset.csv")
     if not os.path.exists(raw_path):
         raise FileNotFoundError(
-            f"Raw dataset not found at {raw_path}. Run 'python src/generate_dataset.py' first."
+            f"Dataset file not found at {raw_path}."
         )
 
     print(f"[INFO] Loading raw dataset from: {raw_path}")

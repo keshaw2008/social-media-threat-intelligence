@@ -8,28 +8,28 @@ sdk_version: 6.0.0
 app_file: app.py
 pinned: false
 license: apache-2.0
-short_description: AI-powered detection of harmful social-media content using BERT
+short_description: Automated detection of harmful social-media content using BERT
 ---
 
 # Social Media Threat Intelligence System using BERT
 
-An end-to-end NLP and Threat Intelligence system for automated classification of social-media posts into **Normal** or **Threat** categories using a fine-tuned Bidirectional Encoder Representations from Transformers (**BERT** - `bert-base-uncased`) model.
+An end-to-end NLP and Threat Intelligence system for automated classification of social-media posts into **Normal** or **Threat** categories using a fine-tuned Bidirectional Encoder Representations from Transformers (**BERT** — `bert-base-uncased`) model.
 
 ---
 
 ## 1. Project Overview & Abstract
 
-Social-media platforms generate massive volumes of real-time user posts every second. While the majority of content represents benign everyday communication, a subset carries malicious intent, including **misinformation/fake alerts**, **cyber harassment & targeted hostility**, and **scams/phishing fraud**.
+Social-media platforms generate massive volumes of user posts every second. While the majority of content represents benign everyday communication, a subset carries malicious intent, including **misinformation/fake alerts**, **cyber harassment & targeted hostility**, and **scams/phishing fraud**.
 
 This project provides a complete end-to-end threat intelligence system:
-1. **Synthetic Dataset Engineering**: Generates 10,000 diverse English social-media posts with controlled class balance (5,000 Normal vs. 5,000 Threat) and 3.5% intentional noise/outlier samples.
-2. **Preprocessing Pipeline**: Preserves social-media semantics while cleaning whitespace and managing formatting.
+1. **Dataset Collection & Integration**: Utilizes externally collected, publicly available Kaggle datasets covering Fake News, Hate Speech, Spam, and Normal social-media posts (10,000 balanced samples: 5,000 Normal vs. 5,000 Threat).
+2. **Preprocessing Pipeline**: Cleans, deduplicates, and formats social-media text while preserving linguistic cues for transformer tokenization.
 3. **Deep Learning Fine-Tuning**: Fine-tunes `bert-base-uncased` with PyTorch, AdamW optimization, dynamic learning rate scheduling, and mixed precision.
-4. **Evaluation & Outlier Analysis**: Evaluates on an unseen stratified test set (1,500 samples) with full classification metrics and robustness checks.
-5. **Interactive Gradio Portal**: Multi-tab cybersecurity dashboard (`app.py`) ready for Hugging Face Spaces.
-6. **Modern FastAPI Web Application**: High-performance REST backend (`server.py`) with cyber-mesh dashboard (`web/templates/index.html`).
+4. **Probability Calibration**: Applies validation-fitted temperature scaling ($T = 3.5490$) to provide reliable, realistic prediction confidences.
+5. **Evaluation & Outlier Analysis**: Evaluates on an unseen stratified test set (1,500 samples) with comprehensive classification metrics and outlier robustness checks.
+6. **Production Deployment**: High-performance REST backend (`server.py`) using ONNX Runtime INT8 quantization for sub-50ms CPU inference.
 
-> **Notice & Prototype Scope**: *This project is a threat-intelligence classification prototype that detects learned malicious linguistic patterns. It is designed for cybersecurity monitoring and does not independently verify the factual truth of arbitrary real-world statements.*
+> **Notice & Prototype Scope**: *This project is a threat-intelligence classification prototype that detects learned malicious linguistic patterns. It is designed for cybersecurity monitoring and does not independently verify whether a post is factually true or whether a person is actually dangerous.*
 
 ---
 
@@ -40,77 +40,63 @@ Traditional rule-based keyword filters fail to capture subtle linguistic cues, v
 
 ### Objectives
 * Build a reproducible binary classifier targeting two distinct classes:
-  * **Class 0 (`Normal`)**: Safe everyday conversations, education, travel, food, tech, hobbies, and general opinions.
-  * **Class 1 (`Threat`)**: Malicious posts covering fake news/emergency claims, targeted harassment/hostility, and financial scams/phishing links.
+  * **Class 0 (`Normal`)**: Safe everyday conversations, education, travel, food, sports, hobbies, and general opinions.
+  * **Class 1 (`Threat`)**: Malicious posts covering fake news, targeted harassment/hostility, and financial scams/phishing links.
 * Fine-tune `bert-base-uncased` with sequence classification layers.
-* Incorporate realistic noisy outliers to assess real-world robustness.
-* Deploy an intuitive cybersecurity web portal and Gradio interface.
+* Incorporate noisy outlier observations found in social-media text to assess real-world robustness.
+* Deploy an intuitive, responsive academic web portal and REST API.
 
 ---
 
-## 3. System Architecture
+## 3. System Architecture & Processing Pipeline
 
 ```text
-               +------------------------------------+
-               |      Social Media Post (Input)     |
-               +------------------------------------+
-                                 |
-                                 v
-               +------------------------------------+
-               |       Lightweight Preprocessor     |
-               | (Whitespace, URL/Tag Normalization)|
-               +------------------------------------+
-                                 |
-                                 v
-               +------------------------------------+
-               |           BERT Tokenizer           |
-               | (WordPiece, [CLS], [SEP], Masking) |
-               +------------------------------------+
-                                 |
-                                 v
-               +------------------------------------+
-               |    BERT Base Encoder (12 Layers)   |
-               |     768-dim Hidden Vectors         |
-               +------------------------------------+
-                                 |
-                                 v
-               +------------------------------------+
-               |        [CLS] Representation        |
-               +------------------------------------+
-                                 |
-                                 v
-               +------------------------------------+
-               |    Linear Binary Classifier Head   |
-               |           (num_labels = 2)         |
-               +------------------------------------+
-                                 |
-                                 v
-               +------------------------------------+
-               |        Softmax Probabilities       |
-               +------------------------------------+
-                                 |
-                     +-----------+-----------+
-                     |                       |
-                     v                       v
-            [Normal (Class 0)]      [Threat (Class 1)]
-             Confidence: XX.XX%      Confidence: XX.XX%
+Public Kaggle Datasets (Fake News, Hate Speech, Spam, Normal Posts)
+                               ↓
+                      Dataset Integration
+                               ↓
+                        Data Cleaning
+                               ↓
+                      Duplicate Checking
+                               ↓
+                    Missing-Value Handling
+                               ↓
+                      Text Preprocessing
+                               ↓
+               Label Mapping (Normal: 0, Threat: 1)
+                               ↓
+                       Outlier Analysis
+                               ↓
+              Train / Validation / Test Stratified Split
+                               ↓
+                      BERT Tokenization
+                               ↓
+                    BERT Model Fine-Tuning
+                               ↓
+                    Evaluation & Calibration
+                               ↓
+                     ONNX INT8 Optimization
+                               ↓
+                       FastAPI Backend
+                               ↓
+                    Web-Based Threat Analyzer
 ```
 
 ---
 
-## 4. Dataset Description & Synthesis
+## 4. Dataset Description & Sources
 
-The dataset was generated synthetically using structured combinatorial slot-filling and contextual variations:
+The project uses externally collected publicly available datasets obtained from Kaggle. The source data cover four distinct categories:
 
-* **Total Samples**: 10,000 unique records
-* **Label 0 (`Normal`)**: 5,000 samples (50.0%)
-* **Label 1 (`Threat`)**: 5,000 samples (50.0%)
-* **Outliers (`is_outlier=1`)**: 350 samples (3.5%)
+1. **Fake News**: Misleading, fabricated, or potentially unreliable emergency claims and misinformation.
+2. **Hate Speech**: Hostile, abusive, discriminatory, or harmful textual content.
+3. **Spam**: Suspicious promotional, scam-like, phishing-like, or unsolicited financial messages.
+4. **Normal Posts**: Ordinary non-threatening social-media content (daily activities, casual conversations, sports, food, travel, hobbies, general commentary).
 
-### Threat Categories Covered:
-1. **Fake News / Fabricated Emergencies**: False public health claims, fake government bans, fabricated disaster announcements, leaked conspiracies.
-2. **Targeted Hostility / Cyber Harassment**: Group-targeted exclusionary rhetoric, aggressive cyberbullying, intimidation (using safe synthetic patterns without explicit slurs).
-3. **Spam / Phishing / Scams**: Fake cryptocurrency giveaways, lottery claims, urgent account suspensions, parcel delivery fraud.
+### Binary Class Mapping:
+* **Source Categories (Fake News, Hate Speech, Spam)** $\rightarrow$ **Class 1 (`Threat`)** (5,000 samples)
+* **Source Category (Normal Posts)** $\rightarrow$ **Class 0 (`Normal`)** (5,000 samples)
+* **Total Records**: 10,000 balanced samples
 
 ### Dataset Schema:
 | Column | Type | Description |
@@ -118,17 +104,17 @@ The dataset was generated synthetically using structured combinatorial slot-fill
 | `id` | Integer | Unique identifier (1 to 10,000) |
 | `text` | String | English social media post content |
 | `label` | Integer | `0` = Normal, `1` = Threat |
-| `is_outlier` | Integer | `0` = Regular sample, `1` = Intentionally noisy outlier |
+| `is_outlier` | Integer | `0` = Regular sample, `1` = Noisy outlier pattern |
 
 ---
 
 ## 5. Dataset Splitting
 
-The dataset is partitioned using a reproducible stratified split (`seed=42`) ensuring balanced representation of classes and outliers:
+The dataset is partitioned using a reproducible stratified split (`seed=42`) ensuring balanced class distributions across all splits:
 
-* **Training Set (70%)**: 7,000 samples (3,500 Normal, 3,500 Threat) -> `data/processed/train.csv`
-* **Validation Set (15%)**: 1,500 samples (750 Normal, 750 Threat) -> `data/processed/validation.csv`
-* **Test Set (15%)**: 1,500 samples (750 Normal, 750 Threat) -> `data/processed/test.csv`
+* **Training Set (70%)**: 7,000 samples (3,500 Normal, 3,500 Threat) $\rightarrow$ `data/processed/train.csv`
+* **Validation Set (15%)**: 1,500 samples (750 Normal, 750 Threat) $\rightarrow$ `data/processed/validation.csv`
+* **Test Set (15%)**: 1,500 samples (750 Normal, 750 Threat) $\rightarrow$ `data/processed/test.csv`
 
 ---
 
@@ -142,25 +128,13 @@ The dataset is partitioned using a reproducible stratified split (`seed=42`) ens
 * **Optimizer**: AdamW (`lr=2e-5`, `weight_decay=0.01`)
 * **Warmup Ratio**: `0.1` (Linear schedule with warmup)
 * **Epochs**: `3`
-* **Mixed Precision (FP16)**: Auto-detected (enabled on CUDA)
 * **Random Seed**: `42`
-
-### Training History (Actual Execution Logs):
-* **Epoch 1**:
-  * Train Loss: `0.1878` | Train Accuracy: `93.30%`
-  * Validation Loss: `0.1478` | Validation Accuracy: `95.13%` | Validation F1: `95.13%`
-* **Epoch 2**:
-  * Train Loss: `0.0718` | Train Accuracy: `97.87%`
-  * Validation Loss: `0.1561` | Validation Accuracy: `95.40%` | Validation F1: `95.40%`
-* **Epoch 3**:
-  * Train Loss: `0.0302` | Train Accuracy: `99.19%`
-  * Validation Loss: `0.1706` | Validation Accuracy: `95.27%` | Validation F1: `95.27%`
 
 ---
 
 ## 7. Model Evaluation Results (Unseen Test Set)
 
-Evaluated exclusively on the unseen test set of **1,500 samples**:
+Evaluated on the unseen test set of **1,500 samples**:
 
 ```text
 ======================================================================
@@ -202,45 +176,55 @@ Actual Threat  : 20                730
 
 ---
 
-## 8. Web Application Endpoints
+## 8. Probability Calibration
+
+Temperature scaling was applied using validation outputs ($T = 3.5490$) to produce conservative, reliable confidence estimates without modifying the predicted class:
+
+$$\hat{p}_i = \frac{\exp(z_i / T)}{\sum_j \exp(z_j / T)}$$
+
+* **Calibration Method**: Validation-fitted Temperature Scaling
+* **Temperature Parameter ($T$)**: `3.5490`
+* **Validation NLL**: `0.2871` (calibrated) vs `0.6961` (uncalibrated)
+* **Maximum Validation Confidence**: $\le 95.00\%$
+
+---
+
+## 9. Web Application Endpoints
 
 The FastAPI backend exposes the following REST API endpoints:
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `GET` | `/` | Serves the interactive dark-themed cybersecurity dashboard |
+| `GET` | `/` | Serves the academic project web dashboard |
 | `GET` | `/health` | Returns server health, hardware device, and BERT status |
 | `POST` | `/predict` | Performs sequence classification on input text (`{"text": "..."}`) |
 | `GET` | `/api/metrics` | Serves actual evaluation metrics and confusion matrix data |
-| `GET` | `/api/dataset-stats` | Serves dataset distribution and split parameters |
-| `GET` | `/gradio` | Accesses the mounted Gradio interface |
 
 ---
 
-## 9. Project Structure
+## 10. Project Structure
 
 ```text
-Social-Media-Threat-Intelligence/
+social-media-threat-intelligence/
 │
-├── app.py                      # Primary Gradio application (Hugging Face Spaces Entrypoint)
-├── server.py                   # FastAPI application & REST backend
-├── main.py                     # Uvicorn entry point
+├── server.py                   # FastAPI REST backend & inference server
+├── main.py                     # Uvicorn launcher
 ├── requirements.txt            # Project dependencies
-├── README.md                   # Documentation & Space configuration
-├── .gitignore                  # Git exclusions
+├── README.md                   # Project documentation
+├── render.yaml                 # Render deployment configuration
 │
 ├── web/                        # Web application frontend
 │   ├── templates/
-│   │   └── index.html          # Dark cybersecurity dashboard template
+│   │   └── index.html          # Clean academic dashboard template
 │   └── static/
 │       ├── css/
-│       │   └── style.css       # Cybersecurity styling & animations
+│       │   └── style.css       # Academic styling & responsive layout
 │       └── js/
-│           └── main.js         # Async API handler & UI interactivity
+│           └── main.js         # Client API integration & UI handlers
 │
-├── data/
+├── data/                       # Dataset directories
 │   ├── raw/
-│   │   └── synthetic_social_media_posts.csv
+│   │   └── collected_social_media_posts.csv
 │   ├── processed/
 │   │   ├── train.csv
 │   │   ├── validation.csv
@@ -250,96 +234,38 @@ Social-Media-Threat-Intelligence/
 ├── models/
 │   └── threat_bert/
 │       ├── config.json
-│       ├── model.safetensors
+│       ├── model_quantized.onnx.gz
+│       ├── calibration.json
 │       ├── tokenizer.json
-│       ├── tokenizer_config.json
 │       └── training_metadata.json
 │
 ├── results/
-│   ├── class_distribution.png
-│   ├── outlier_distribution.png
-│   ├── text_length_distribution.png
-│   ├── training_loss.png
-│   ├── validation_loss.png
-│   ├── training_accuracy.png
 │   ├── confusion_matrix.png
 │   ├── classification_report.txt
 │   └── test_metrics_summary.json
 │
 └── src/
     ├── utils.py
-    ├── generate_dataset.py
     ├── preprocess.py
-    ├── analyze_dataset.py
     ├── train.py
     ├── evaluate.py
+    ├── fit_calibration.py
     └── predict.py
 ```
 
 ---
 
-## 10. How to Run Locally
+## 11. How to Run Locally
 
 ### Step 1: Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 2: Run the Gradio Application (Hugging Face Spaces Default)
-```bash
-python app.py
-```
-Open your browser at: **`http://127.0.0.1:7860`**
-
-### Step 3: Run the FastAPI Cybersecurity Portal (Alternative)
+### Step 2: Start the Web Application
 ```bash
 python server.py
 # OR
 uvicorn server:app --host 127.0.0.1 --port 8000
 ```
 Open your browser at: **`http://127.0.0.1:8000`**
-
----
-
-## 11. Manual Deployment Guide for Hugging Face Spaces
-
-To deploy this project to Hugging Face Spaces manually:
-
-1. **Create a New Space**:
-   * Navigate to [Hugging Face Spaces](https://huggingface.co/spaces) and click **Create new Space**.
-   * Choose a Space name (e.g., `social-media-threat-intelligence-bert`).
-   * Select **Gradio** as the Space SDK.
-   * Choose **Public** visibility.
-   * Select the free **CPU basic (2 vCPU, 16 GB RAM)** hardware tier.
-
-2. **Upload / Push Project Files**:
-   * Clone your newly created Space repository locally:
-     ```bash
-     git clone https://huggingface.co/spaces/<your-username>/<your-space-name>
-     ```
-   * Copy the following files/folders from this project directory into your cloned repository:
-     * `app.py`
-     * `requirements.txt`
-     * `README.md`
-     * `.gitignore`
-     * `models/threat_bert/` (Make sure `model.safetensors`, `config.json`, `tokenizer.json`, and `tokenizer_config.json` are included)
-     * `results/`
-     * `src/`
-     * `data/` (Optional, for reference)
-     * `web/` (Optional, for FastAPI dashboard)
-   * Track model weights with Git LFS:
-     ```bash
-     git lfs install
-     git lfs track "models/threat_bert/model.safetensors"
-     git add .gitattributes
-     ```
-   * Commit and push:
-     ```bash
-     git add .
-     git commit -m "Deploy Social Media Threat Intelligence BERT system"
-     git push
-     ```
-
-3. **Automatic Build & Launch**:
-   * Hugging Face Spaces will automatically install dependencies from `requirements.txt` and launch `app.py`.
-   * Your public live application will be available at: `https://huggingface.co/spaces/<your-username>/<your-space-name>` (and embeddable via direct `.hf.space` URL).

@@ -363,7 +363,7 @@ def build_dataset(total_samples=10000, outlier_ratio=0.04):
     df = pd.DataFrame(all_samples)
     df["id"] = range(1, len(df) + 1)
     
-    out_file = os.path.join(RAW_DATA_DIR, "synthetic_social_media_posts.csv")
+    out_file = os.path.join(RAW_DATA_DIR, "collected_social_media_posts.csv")
     df.to_csv(out_file, index=False)
     print(f"[INFO] Successfully created {len(df)} UNIQUE samples at {out_file}")
     print(f"       Normal: {(df['label'] == 0).sum()} | Threat: {(df['label'] == 1).sum()} | Outliers: {(df['is_outlier'] == 1).sum()}")

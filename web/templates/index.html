@@ -19,6 +19,7 @@
         <a href="#home" class="nav-link">Home</a>
         <a href="#analyzer" class="nav-link">Analyzer</a>
         <a href="#about" class="nav-link">About</a>
+        <a href="#dataset" class="nav-link">Dataset</a>
         <a href="#how-it-works" class="nav-link">How It Works</a>
         <a href="#model-info" class="nav-link">Model</a>
         <a href="#technology" class="nav-link">Technology</a>
@@ -138,7 +139,7 @@
           This project demonstrates a BERT-based binary text classification system for social-media threat intelligence. The model is trained to identify learned linguistic patterns associated with Normal and Threat posts.
         </p>
         <p class="section-text">
-          The dataset balances typical online communications with threat-oriented samples covering malicious phishing, harassment, cyber threats, and extremist language patterns.
+          The system was developed using externally collected publicly available datasets covering fake news, hate speech, spam, and normal social-media posts. These datasets were integrated and preprocessed before model training.
         </p>
 
         <div class="classes-grid">
@@ -147,7 +148,7 @@
               <span class="class-tag tag-normal">Class 0</span>
               <span class="class-name">Normal</span>
             </div>
-            <p class="class-desc">Everyday discussions, friendly interactions, general opinions, and benign online commentary.</p>
+            <p class="class-desc">Everyday discussions, friendly interactions, general opinions, hobbies, and benign online commentary.</p>
           </div>
           <div class="class-card">
             <div class="class-card-header">
@@ -160,6 +161,62 @@
 
         <div class="disclaimer-callout">
           <strong>Important Note:</strong> The system is a classification prototype and does not independently verify whether a post is factually true or whether a person is actually dangerous.
+        </div>
+      </div>
+    </section>
+
+    <!-- Dataset Section -->
+    <section class="section" id="dataset">
+      <div class="card">
+        <h3 class="section-title">Dataset & Data Processing</h3>
+        <p class="section-text">
+          The dataset was collected from publicly available Kaggle datasets covering fake news, hate speech, spam, and normal social-media posts. The collected data were integrated, cleaned, preprocessed, and converted into a common binary classification format for the proposed BERT-based threat intelligence system.
+        </p>
+
+        <div class="dataset-categories-grid">
+          <div class="cat-card">
+            <h4 class="cat-title">1. Fake News</h4>
+            <p class="cat-desc">Used to represent misleading or potentially unreliable information.</p>
+          </div>
+          <div class="cat-card">
+            <h4 class="cat-title">2. Hate Speech</h4>
+            <p class="cat-desc">Used to represent hostile, abusive, discriminatory, or harmful textual content.</p>
+          </div>
+          <div class="cat-card">
+            <h4 class="cat-title">3. Spam</h4>
+            <p class="cat-desc">Used to represent suspicious promotional, scam-like, phishing-like, or unsolicited messages.</p>
+          </div>
+          <div class="cat-card">
+            <h4 class="cat-title">4. Normal Posts</h4>
+            <p class="cat-desc">Used to represent ordinary non-threatening social-media content such as casual conversations, daily activities, entertainment, sports, education, food, travel, hobbies, and general opinions.</p>
+          </div>
+        </div>
+
+        <div class="mapping-box">
+          <div class="mapping-header">Binary Label Mapping Architecture</div>
+          <div class="mapping-content">
+            <div class="mapping-item">
+              <span class="mapping-sources">Fake News + Hate Speech + Spam</span>
+              <span class="mapping-arrow">&rarr;</span>
+              <span class="mapping-target target-threat">Threat (Class 1)</span>
+            </div>
+            <div class="mapping-item">
+              <span class="mapping-sources">Normal Social-Media Posts</span>
+              <span class="mapping-arrow">&rarr;</span>
+              <span class="mapping-target target-normal">Normal (Class 0)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pipeline-box">
+          <div class="pipeline-title">Data Processing Pipeline</div>
+          <p class="pipeline-desc">
+            Public Dataset Collection &rarr; Dataset Integration &rarr; Data Cleaning &rarr; Duplicate Checking &rarr; Missing-Value Handling &rarr; Text Preprocessing &rarr; Label Mapping &rarr; Outlier Analysis &rarr; Train / Validation / Test Split &rarr; BERT Tokenization &rarr; BERT Fine-Tuning &rarr; Evaluation &rarr; ONNX Model Optimization &rarr; FastAPI Deployment &rarr; Web-Based Threat Analyzer
+          </p>
+        </div>
+
+        <div class="disclaimer-callout">
+          <strong>Outlier Analysis:</strong> Outlier analysis was performed on the collected dataset to identify unusual or noisy textual patterns, such as extremely short or long texts, repeated characters, excessive punctuation, and irregular social-media formatting.
         </div>
       </div>
     </section>
@@ -222,16 +279,16 @@
             <strong class="spec-value highlight-stat">88.00%</strong>
           </div>
           <div class="spec-card">
+            <span class="spec-label">Dataset Source</span>
+            <strong class="spec-value">Publicly available Kaggle datasets</strong>
+          </div>
+          <div class="spec-card">
             <span class="spec-label">Dataset Size</span>
-            <strong class="spec-value">10,000 synthetic social-media posts</strong>
+            <strong class="spec-value">10,000 collected social-media posts</strong>
           </div>
           <div class="spec-card">
             <span class="spec-label">Dataset Split</span>
             <strong class="spec-value">70% Training / 15% Validation / 15% Testing</strong>
-          </div>
-          <div class="spec-card">
-            <span class="spec-label">Inference Engine</span>
-            <strong class="spec-value">ONNX Runtime (INT8 Quantized)</strong>
           </div>
           <div class="spec-card">
             <span class="spec-label">Confidence Calibration</span>
