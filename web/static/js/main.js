@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Social Media Threat Intelligence — Academic Project Client JavaScript
+   Social Media Threat Intelligence System — Academic Project Client Script
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,9 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const charCounter = document.getElementById('char-counter');
   const validationMsg = document.getElementById('validation-msg');
 
-  const exampleNormalBtn = document.getElementById('example-normal-btn');
-  const exampleThreatBtn = document.getElementById('example-threat-btn');
+  // Example Buttons
+  const example1Btn = document.getElementById('example-1-btn');
+  const example2Btn = document.getElementById('example-2-btn');
+  const example3Btn = document.getElementById('example-3-btn');
+  const example4Btn = document.getElementById('example-4-btn');
 
+  // Result Elements
   const resultContainer = document.getElementById('result-container');
   const predictionBadge = document.getElementById('prediction-badge');
   const confidenceText = document.getElementById('confidence-text');
@@ -22,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const probThreatVal = document.getElementById('prob-threat-val');
   const inferenceTime = document.getElementById('inference-time');
 
-  // Character counter
+  // Character Counter & Live Input Handler
   postInput.addEventListener('input', () => {
     const len = postInput.value.length;
     charCounter.textContent = `${len} character${len === 1 ? '' : 's'}`;
@@ -31,18 +35,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Example Buttons
-  exampleNormalBtn.addEventListener('click', () => {
-    postInput.value = 'Had a great day with my friends today.';
+  // Example Button Handlers (Populates textarea without auto-running)
+  function setExampleText(text) {
+    postInput.value = text;
     postInput.dispatchEvent(new Event('input'));
+    validationMsg.style.display = 'none';
     postInput.focus();
-  });
+  }
 
-  exampleThreatBtn.addEventListener('click', () => {
-    postInput.value = 'Congratulations! You won a free phone. Click this link immediately!';
-    postInput.dispatchEvent(new Event('input'));
-    postInput.focus();
-  });
+  if (example1Btn) {
+    example1Btn.addEventListener('click', () => {
+      setExampleText('Had a great day with my friends today.');
+    });
+  }
+
+  if (example2Btn) {
+    example2Btn.addEventListener('click', () => {
+      setExampleText('Congratulations! You won a free phone. Click this link immediately!');
+    });
+  }
+
+  if (example3Btn) {
+    example3Btn.addEventListener('click', () => {
+      setExampleText('We are going to totally destroy the enemy squad in Valorant tonight!');
+    });
+  }
+
+  if (example4Btn) {
+    example4Btn.addEventListener('click', () => {
+      setExampleText('We know where your children go to school in Chicago. Keep your mouth shut.');
+    });
+  }
 
   // Clear Button
   clearBtn.addEventListener('click', () => {
@@ -53,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     postInput.focus();
   });
 
-  // Analyze Button & Keyboard Shortcut (Ctrl+Enter)
+  // Analyze Button & Keyboard Shortcut (Ctrl+Enter / Cmd+Enter)
   analyzeBtn.addEventListener('click', performAnalysis);
 
   postInput.addEventListener('keydown', (e) => {
@@ -94,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (err) {
       console.error('Inference error:', err);
-      alert('Could not connect to the backend server. Please check if the server is running.');
+      alert('Could not connect to the backend server. Please verify that the server is active.');
     } finally {
       setLoading(false);
     }
@@ -115,28 +138,28 @@ document.addEventListener('DOMContentLoaded', () => {
     resultContainer.style.display = 'block';
 
     const isThreat = data.label === 'Threat';
-    const conf = data.confidence !== undefined ? data.confidence : (data.confidence_raw * 100);
+    const conf = data.confidence !== undefined ? Number(data.confidence) : (Number(data.confidence_raw) * 100);
     const latency = data.inference_time_ms ? `${data.inference_time_ms.toFixed(1)} ms` : `${roundtripMs} ms`;
 
     // Latency
     inferenceTime.textContent = `Inference: ${latency}`;
 
-    // Prediction Badge
+    // Prediction Badge & Progress Bar Styling
     if (isThreat) {
       predictionBadge.className = 'badge-prediction badge-threat';
-      predictionBadge.textContent = 'THREAT';
+      predictionBadge.textContent = 'Threat';
       progressBarFill.className = 'progress-bar-fill bar-threat';
     } else {
       predictionBadge.className = 'badge-prediction badge-normal';
-      predictionBadge.textContent = 'NORMAL';
+      predictionBadge.textContent = 'Normal';
       progressBarFill.className = 'progress-bar-fill bar-normal';
     }
 
-    // Confidence
+    // Calibrated Confidence
     confidenceText.textContent = `${conf.toFixed(2)}%`;
     progressBarFill.style.width = `${Math.min(100, Math.max(0, conf))}%`;
 
-    // Class Probabilities (API returns values already scaled to percentage: e.g., 0.02 for 0.02%, 99.98 for 99.98%)
+    // Class Probabilities (API returns values as percentages, format directly)
     if (data.probabilities) {
       const pNormal = Number(data.probabilities.Normal);
       const pThreat = Number(data.probabilities.Threat);

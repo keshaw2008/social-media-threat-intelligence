@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Social Media Threat Intelligence — Academic Project</title>
+  <title>Social Media Threat Intelligence System — Academic Project</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,10 +17,12 @@
       <a href="#home" class="nav-brand">Social Media Threat Intelligence</a>
       <nav class="nav-links">
         <a href="#home" class="nav-link">Home</a>
+        <a href="#analyzer" class="nav-link">Analyzer</a>
         <a href="#about" class="nav-link">About</a>
-        <a href="#model" class="nav-link">AI Model</a>
         <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="#model-info" class="nav-link">Model</a>
         <a href="#technology" class="nav-link">Technology</a>
+        <a href="#analyzer" class="nav-btn">Try Analyzer</a>
       </nav>
     </div>
   </header>
@@ -29,42 +31,56 @@
 
     <!-- Hero Section -->
     <section class="hero-section">
-      <div class="hero-label">BERT-based Text Classification</div>
+      <div class="academic-badge">BERT Binary Classification</div>
       <h1 class="hero-title">Social Media Threat Intelligence</h1>
-      <h2 class="hero-subtitle">Detect potentially threatening social-media content using BERT</h2>
+      <h2 class="hero-subtitle">A BERT-based system for classifying social-media posts as Normal or Threat.</h2>
       <p class="hero-description">
-        This project analyzes English social-media posts and classifies them as Normal or Threat using a fine-tuned BERT model.
+        This project analyzes the language patterns in a social-media post and predicts whether it belongs to the Normal or Threat category.
       </p>
     </section>
 
-    <!-- Main Analysis Area -->
+    <!-- Main Analyzer Section -->
     <section class="analyzer-section" id="analyzer">
       <div class="card analyzer-card">
-        <h3 class="card-heading">Analyze a Social Media Post</h3>
-        <p class="card-instruction">Enter a social-media post below to classify its content.</p>
-
-        <!-- Example Buttons -->
-        <div class="example-buttons-row">
-          <span class="examples-label">Examples:</span>
-          <button type="button" class="btn-example" id="example-normal-btn">Normal Example</button>
-          <button type="button" class="btn-example" id="example-threat-btn">Threat Example</button>
+        <div class="analyzer-header">
+          <h3 class="card-heading">Analyze a Post</h3>
+          <p class="card-instruction">Enter a social-media post below to see how the trained model classifies it.</p>
         </div>
 
-        <!-- Input Textarea -->
+        <!-- Example Posts -->
+        <div class="examples-container">
+          <span class="examples-title">Try an example:</span>
+          <div class="examples-chips">
+            <button type="button" class="example-chip" id="example-1-btn" title="Click to paste text">
+              "Had a great day with my friends today."
+            </button>
+            <button type="button" class="example-chip" id="example-2-btn" title="Click to paste text">
+              "Congratulations! You won a free phone. Click this link immediately!"
+            </button>
+            <button type="button" class="example-chip" id="example-3-btn" title="Click to paste text">
+              "We are going to totally destroy the enemy squad in Valorant tonight!"
+            </button>
+            <button type="button" class="example-chip" id="example-4-btn" title="Click to paste text">
+              "We know where your children go to school in Chicago. Keep your mouth shut."
+            </button>
+          </div>
+        </div>
+
+        <!-- Input Area -->
         <div class="form-group">
           <textarea 
             id="post-input" 
             class="text-input" 
             rows="4" 
-            placeholder="Type or paste a social-media post here..."
+            placeholder="Enter a social-media post here..."
           ></textarea>
-          <div class="textarea-info">
-            <span id="char-counter">0 characters</span>
+          <div class="textarea-footer">
+            <span id="char-counter" class="char-counter">0 characters</span>
             <span id="validation-msg" class="validation-msg">Please enter text to analyze.</span>
           </div>
         </div>
 
-        <!-- Action Buttons -->
+        <!-- Actions -->
         <div class="actions-row">
           <button type="button" id="analyze-btn" class="btn btn-primary">
             <span id="btn-spinner" class="spinner" style="display: none;"></span>
@@ -73,37 +89,40 @@
           <button type="button" id="clear-btn" class="btn btn-secondary">Clear</button>
         </div>
 
-        <!-- Prediction Result Container -->
+        <!-- Result Section -->
         <div id="result-container" class="result-container" style="display: none;">
           <div class="result-header">
-            <span class="result-title">Prediction Result</span>
+            <h4 class="result-title">Analysis Result</h4>
             <span id="inference-time" class="inference-time"></span>
           </div>
-          
+
           <div class="result-body">
-            <div class="prediction-row">
-              <span class="prediction-label">Prediction:</span>
-              <span id="prediction-badge" class="badge-prediction">NORMAL</span>
+            <!-- Prediction Badge -->
+            <div class="result-row">
+              <span class="result-label">Prediction:</span>
+              <span id="prediction-badge" class="badge-prediction">Normal</span>
             </div>
 
-            <div class="confidence-row">
-              <div class="confidence-info">
-                <span>Confidence:</span>
-                <strong id="confidence-text">0.00%</strong>
+            <!-- Confidence Bar -->
+            <div class="confidence-container">
+              <div class="confidence-header">
+                <span class="confidence-label">Confidence:</span>
+                <strong id="confidence-text" class="confidence-value">0.00%</strong>
               </div>
-              <div class="progress-bar-bg">
+              <div class="progress-track">
                 <div id="progress-bar-fill" class="progress-bar-fill"></div>
               </div>
             </div>
 
-            <div class="prob-distribution">
-              <div class="prob-item">
-                <span class="prob-name">Class 0 (Normal):</span>
-                <span id="prob-normal-val" class="prob-val">0.00%</span>
+            <!-- Class Probabilities Breakdown -->
+            <div class="probabilities-grid">
+              <div class="prob-card">
+                <span class="prob-label">Class 0 (Normal):</span>
+                <strong id="prob-normal-val" class="prob-num">0.00%</strong>
               </div>
-              <div class="prob-item">
-                <span class="prob-name">Class 1 (Threat):</span>
-                <span id="prob-threat-val" class="prob-val">0.00%</span>
+              <div class="prob-card">
+                <span class="prob-label">Class 1 (Threat):</span>
+                <strong id="prob-threat-val" class="prob-num">0.00%</strong>
               </div>
             </div>
           </div>
@@ -116,52 +135,31 @@
       <div class="card">
         <h3 class="section-title">About the Project</h3>
         <p class="section-text">
-          This project is a threat-intelligence prototype that uses a fine-tuned BERT model to classify English social-media posts into two categories: Normal and Threat.
+          This project demonstrates a BERT-based binary text classification system for social-media threat intelligence. The model is trained to identify learned linguistic patterns associated with Normal and Threat posts.
         </p>
         <p class="section-text">
-          The Threat category covers patterns related to fake-news-like content, hate-speech-like content and spam/scam-like content.
+          The dataset balances typical online communications with threat-oriented samples covering malicious phishing, harassment, cyber threats, and extremist language patterns.
         </p>
-        <div class="classes-info">
-          <div class="class-item">
-            <span class="class-code">Class 0</span>
-            <span class="class-desc">Normal — everyday discussions, casual conversations, benign commentary.</span>
-          </div>
-          <div class="class-item">
-            <span class="class-code">Class 1</span>
-            <span class="class-desc">Threat — suspicious, scam/phishing, hateful, or disinformation patterns.</span>
-          </div>
-        </div>
-        <div class="disclaimer-box">
-          <strong>Disclaimer:</strong> The model identifies linguistic patterns learned during training. It does not independently verify facts or determine whether a person is actually dangerous.
-        </div>
-      </div>
-    </section>
 
-    <!-- AI Model Section -->
-    <section class="section" id="model">
-      <div class="card">
-        <h3 class="section-title">AI Model</h3>
-        <div class="grid-4">
-          <div class="info-card">
-            <div class="info-label">Architecture</div>
-            <div class="info-value">BERT</div>
-            <div class="info-detail">bert-base-uncased</div>
+        <div class="classes-grid">
+          <div class="class-card">
+            <div class="class-card-header">
+              <span class="class-tag tag-normal">Class 0</span>
+              <span class="class-name">Normal</span>
+            </div>
+            <p class="class-desc">Everyday discussions, friendly interactions, general opinions, and benign online commentary.</p>
           </div>
-          <div class="info-card">
-            <div class="info-label">Task</div>
-            <div class="info-value">Classification</div>
-            <div class="info-detail">Binary Text Classification</div>
+          <div class="class-card">
+            <div class="class-card-header">
+              <span class="class-tag tag-threat">Class 1</span>
+              <span class="class-name">Threat</span>
+            </div>
+            <p class="class-desc">Threatening language, targeted harassment, coercive intimidation, scams, and dangerous content.</p>
           </div>
-          <div class="info-card">
-            <div class="info-label">Inference Engine</div>
-            <div class="info-value">ONNX Runtime</div>
-            <div class="info-detail">INT8 Quantization</div>
-          </div>
-          <div class="info-card">
-            <div class="info-label">Web Backend</div>
-            <div class="info-value">FastAPI</div>
-            <div class="info-detail">Python REST API</div>
-          </div>
+        </div>
+
+        <div class="disclaimer-callout">
+          <strong>Important Note:</strong> The system is a classification prototype and does not independently verify whether a post is factually true or whether a person is actually dangerous.
         </div>
       </div>
     </section>
@@ -170,53 +168,91 @@
     <section class="section" id="how-it-works">
       <div class="card">
         <h3 class="section-title">How It Works</h3>
-        <div class="process-flow">
-          <div class="process-step">
-            <div class="step-circle">1</div>
-            <div class="step-label">Social Media Post</div>
+        <p class="section-text">The inference pipeline processes each post through four sequential stages:</p>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <h4 class="step-title">Enter Post</h4>
+            <p class="step-desc">The user enters a social-media post into the web interface.</p>
           </div>
-          <div class="step-arrow">&rarr;</div>
-          <div class="process-step">
-            <div class="step-circle">2</div>
-            <div class="step-label">Text Processing</div>
+
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <h4 class="step-title">Tokenization</h4>
+            <p class="step-desc">The text is converted into tokens using the BERT WordPiece tokenizer.</p>
           </div>
-          <div class="step-arrow">&rarr;</div>
-          <div class="process-step">
-            <div class="step-circle">3</div>
-            <div class="step-label">BERT Tokenization</div>
+
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <h4 class="step-title">BERT Classification</h4>
+            <p class="step-desc">The trained BERT model analyzes the text and predicts one of two classes.</p>
           </div>
-          <div class="step-arrow">&rarr;</div>
-          <div class="process-step">
-            <div class="step-circle">4</div>
-            <div class="step-label">BERT Model</div>
-          </div>
-          <div class="step-arrow">&rarr;</div>
-          <div class="process-step">
-            <div class="step-circle">5</div>
-            <div class="step-label">Classification</div>
-          </div>
-          <div class="step-arrow">&rarr;</div>
-          <div class="process-step">
-            <div class="step-circle">6</div>
-            <div class="step-label">Normal / Threat</div>
+
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <h4 class="step-title">Result</h4>
+            <p class="step-desc">The system displays Normal or Threat along with the calibrated confidence.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Technology Section -->
+    <!-- Model Information Section -->
+    <section class="section" id="model-info">
+      <div class="card">
+        <h3 class="section-title">Model Specifications</h3>
+        <p class="section-text">Architectural specifications and evaluation metrics from the verified model test set:</p>
+
+        <div class="specs-grid">
+          <div class="spec-card">
+            <span class="spec-label">Model Architecture</span>
+            <strong class="spec-value">BERT — bert-base-uncased</strong>
+          </div>
+          <div class="spec-card">
+            <span class="spec-label">Classification Task</span>
+            <strong class="spec-value">Binary Text Classification</strong>
+          </div>
+          <div class="spec-card">
+            <span class="spec-label">Target Classes</span>
+            <strong class="spec-value">Class 0 (Normal) / Class 1 (Threat)</strong>
+          </div>
+          <div class="spec-card">
+            <span class="spec-label">Test Accuracy</span>
+            <strong class="spec-value highlight-stat">88.00%</strong>
+          </div>
+          <div class="spec-card">
+            <span class="spec-label">Dataset Size</span>
+            <strong class="spec-value">10,000 synthetic social-media posts</strong>
+          </div>
+          <div class="spec-card">
+            <span class="spec-label">Dataset Split</span>
+            <strong class="spec-value">70% Training / 15% Validation / 15% Testing</strong>
+          </div>
+          <div class="spec-card">
+            <span class="spec-label">Inference Engine</span>
+            <strong class="spec-value">ONNX Runtime (INT8 Quantized)</strong>
+          </div>
+          <div class="spec-card">
+            <span class="spec-label">Confidence Calibration</span>
+            <strong class="spec-value">Temperature Scaling (T = 3.5490)</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technology Stack Section -->
     <section class="section" id="technology">
       <div class="card">
-        <h3 class="section-title">Technology</h3>
-        <div class="tech-tags">
-          <span class="tech-tag">Python</span>
-          <span class="tech-tag">BERT</span>
-          <span class="tech-tag">PyTorch</span>
-          <span class="tech-tag">ONNX Runtime</span>
-          <span class="tech-tag">FastAPI</span>
-          <span class="tech-tag">HTML</span>
-          <span class="tech-tag">CSS</span>
-          <span class="tech-tag">JavaScript</span>
+        <h3 class="section-title">Technologies Used</h3>
+        <div class="tech-tags-list">
+          <div class="tech-badge"><strong>Python</strong> — Core development</div>
+          <div class="tech-badge"><strong>PyTorch</strong> — Model fine-tuning</div>
+          <div class="tech-badge"><strong>Hugging Face Transformers</strong> — BERT architecture</div>
+          <div class="tech-badge"><strong>BERT</strong> — bert-base-uncased pretrained encoder</div>
+          <div class="tech-badge"><strong>ONNX Runtime</strong> — Optimized INT8 quantized inference</div>
+          <div class="tech-badge"><strong>FastAPI</strong> — High-performance REST API</div>
+          <div class="tech-badge"><strong>HTML / CSS / JavaScript</strong> — Responsive client interface</div>
         </div>
       </div>
     </section>
@@ -226,8 +262,9 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="container footer-content">
-      <p class="footer-title">Social Media Threat Intelligence System using BERT</p>
-      <p class="footer-subtitle">Academic project prototype</p>
+      <p class="footer-title">Social Media Threat Intelligence System</p>
+      <p class="footer-meta">BERT-based academic project prototype</p>
+      <p class="footer-note">Built for educational and demonstration purposes.</p>
     </div>
   </footer>
 
