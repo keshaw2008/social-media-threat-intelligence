@@ -2,29 +2,29 @@
       SOCIAL MEDIA THREAT INTELLIGENCE - MODEL EVALUATION REPORT
 ======================================================================
 
-Test Accuracy:     1.0000 (100.00%)
-Threat Precision:  1.0000 (100.00%)
-Threat Recall:     1.0000 (100.00%)
-Threat F1 Score:   1.0000 (100.00%)
-Macro F1 Score:    1.0000 (100.00%)
-Weighted F1 Score: 1.0000 (100.00%)
+Test Accuracy:     0.8800 (88.00%)
+Threat Precision:  0.8202 (82.02%)
+Threat Recall:     0.9733 (97.33%)
+Threat F1 Score:   0.8902 (89.02%)
+Macro F1 Score:    0.8789 (87.89%)
+Weighted F1 Score: 0.8789 (87.89%)
 
 Detailed Classification Report:
               precision    recall  f1-score   support
 
-      Normal     1.0000    1.0000    1.0000       750
-      Threat     1.0000    1.0000    1.0000       750
+      Normal     0.9672    0.7867    0.8676       750
+      Threat     0.8202    0.9733    0.8902       750
 
-    accuracy                         1.0000      1500
-   macro avg     1.0000    1.0000    1.0000      1500
-weighted avg     1.0000    1.0000    1.0000      1500
+    accuracy                         0.8800      1500
+   macro avg     0.8937    0.8800    0.8789      1500
+weighted avg     0.8937    0.8800    0.8789      1500
 
 
 Confusion Matrix:
-TN=750, FP=0
-FN=0, TP=750
+TN=590, FP=160
+FN=20, TP=730
 
 ----------------------------------------------------------------------
-Regular Samples (1448): Accuracy=100.00%, Macro F1=100.00%
-Outlier Samples (52): Accuracy=100.00%, Macro F1=100.00%
+Regular Samples (1421): Accuracy=88.04%, Macro F1=87.92%
+Outlier Samples (79): Accuracy=87.34%, Macro F1=87.32%
 ======================================================================

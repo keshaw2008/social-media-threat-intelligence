@@ -1,22 +1,22 @@
 {
-  "test_accuracy": 1.0,
-  "threat_precision": 1.0,
-  "threat_recall": 1.0,
-  "threat_f1": 1.0,
-  "macro_f1": 1.0,
-  "weighted_f1": 1.0,
+  "test_accuracy": 0.88,
+  "threat_precision": 0.8202247191011236,
+  "threat_recall": 0.9733333333333334,
+  "threat_f1": 0.8902439024390244,
+  "macro_f1": 0.8789454806312769,
+  "weighted_f1": 0.878945480631277,
   "confusion_matrix": [
     [
-      750,
-      0
+      590,
+      160
     ],
     [
-      0,
-      750
+      20,
+      730
     ]
   ],
-  "regular_accuracy": 1.0,
-  "regular_macro_f1": 1.0,
-  "outlier_accuracy": 1.0,
-  "outlier_macro_f1": 1.0
+  "regular_accuracy": 0.88036593947924,
+  "regular_macro_f1": 0.8792434985343459,
+  "outlier_accuracy": 0.8734177215189873,
+  "outlier_macro_f1": 0.873234916559692
 }

@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 
 # Training checkpoints and cache
+models/threat_bert/checkpoint-*/
 models/threat_bert/checkpoint-epoch-*/
 checkpoint-*/
 .cache/
@@ -22,13 +23,12 @@ Thumbs.db
 *.tmp
 *.log
 
-# Never ignore model weights and configs
-!models/threat_bert/model_quantized.onnx
-!models/threat_bert/model.onnx
-!models/threat_bert/model.safetensors
-!models/threat_bert/*.json
-
-# Local BERT model files - use compressed ONNX model for deployment
-models/threat_bert/model.onnx
+# Large uncompressed model files (Deploy with model_quantized.onnx.gz)
 models/threat_bert/model.safetensors
+models/threat_bert/model.onnx
 models/threat_bert/model_quantized.onnx
+
+# Allow compressed model and configs
+!models/threat_bert/model_quantized.onnx.gz
+!models/threat_bert/*.json
+!models/threat_bert/*.txt

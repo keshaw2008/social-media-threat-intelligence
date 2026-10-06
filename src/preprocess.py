@@ -94,6 +94,7 @@ def preprocess_and_split():
 
     train_df.to_csv(train_path, index=False)
     val_df.to_csv(val_path, index=False)
+    val_df.to_csv(os.path.join(PROCESSED_DATA_DIR, "val.csv"), index=False)
     test_df.to_csv(test_path, index=False)
 
     print(f"\n[SPLIT SUMMARY]")

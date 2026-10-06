@@ -136,22 +136,25 @@ The dataset is partitioned using a reproducible stratified split (`seed=42`) ens
 
 * **Model**: `bert-base-uncased` (110M parameters)
 * **Max Sequence Length**: `128`
-* **Train Batch Size**: `2`
-* **Eval Batch Size**: `2`
-* **Gradient Accumulation Steps**: `4` (Effective batch size = `8`)
+* **Train Batch Size**: `16`
+* **Eval Batch Size**: `32`
+* **Gradient Accumulation Steps**: `1`
 * **Optimizer**: AdamW (`lr=2e-5`, `weight_decay=0.01`)
 * **Warmup Ratio**: `0.1` (Linear schedule with warmup)
-* **Epochs**: `2`
+* **Epochs**: `3`
 * **Mixed Precision (FP16)**: Auto-detected (enabled on CUDA)
 * **Random Seed**: `42`
 
 ### Training History (Actual Execution Logs):
 * **Epoch 1**:
-  * Train Loss: `0.0635` | Train Accuracy: `97.43%`
-  * Validation Loss: `0.0013` | Validation Accuracy: `99.93%` | Validation F1: `99.93%`
+  * Train Loss: `0.1878` | Train Accuracy: `93.30%`
+  * Validation Loss: `0.1478` | Validation Accuracy: `95.13%` | Validation F1: `95.13%`
 * **Epoch 2**:
-  * Train Loss: `0.0016` | Train Accuracy: `99.97%`
-  * Validation Loss: `0.0000` | Validation Accuracy: `100.00%` | Validation F1: `100.00%`
+  * Train Loss: `0.0718` | Train Accuracy: `97.87%`
+  * Validation Loss: `0.1561` | Validation Accuracy: `95.40%` | Validation F1: `95.40%`
+* **Epoch 3**:
+  * Train Loss: `0.0302` | Train Accuracy: `99.19%`
+  * Validation Loss: `0.1706` | Validation Accuracy: `95.27%` | Validation F1: `95.27%`
 
 ---
 
@@ -163,39 +166,39 @@ Evaluated exclusively on the unseen test set of **1,500 samples**:
 ======================================================================
              FINAL BERT MODEL EVALUATION RESULTS (TEST SET)
 ======================================================================
-Test Accuracy:          1.0000 (100.00%)
-Threat Precision:       1.0000 (100.00%)
-Threat Recall:          1.0000 (100.00%)
-Threat F1 Score:        1.0000 (100.00%)
-Macro F1 Score:         1.0000 (100.00%)
-Weighted F1 Score:      1.0000 (100.00%)
+Test Accuracy:          0.8800 (88.00%)
+Threat Precision:       0.8202 (82.02%)
+Threat Recall:          0.9733 (97.33%)
+Threat F1 Score:        0.8902 (89.02%)
+Macro F1 Score:         0.8789 (87.89%)
+Weighted F1 Score:      0.8789 (87.89%)
 ----------------------------------------------------------------------
 Classification Report:
 
               precision    recall  f1-score   support
 
-      Normal     1.0000    1.0000    1.0000       750
-      Threat     1.0000    1.0000    1.0000       750
+      Normal     0.9672    0.7867    0.8676       750
+      Threat     0.8202    0.9733    0.8902       750
 
-    accuracy                         1.0000      1500
-   macro avg     1.0000    1.0000    1.0000      1500
-weighted avg     1.0000    1.0000    1.0000      1500
+    accuracy                         0.8800      1500
+   macro avg     0.8937    0.8800    0.8789      1500
+weighted avg     0.8937    0.8800    0.8789      1500
 
 ----------------------------------------------------------------------
 Confusion Matrix:
                  Predicted Normal  Predicted Threat
-Actual Normal  : 750               0
-Actual Threat  : 0                 750
+Actual Normal  : 590               160
+Actual Threat  : 20                730
 ======================================================================
 ```
 
 ### Outlier Robustness Analysis:
-* **Regular Test Samples (1,448 samples)**:
-  * Accuracy: `100.00%`
-  * Macro F1: `100.00%`
-* **Outlier Test Samples (52 noisy samples)**:
-  * Accuracy: `100.00%`
-  * Macro F1: `100.00%`
+* **Regular Test Samples (1,421 samples)**:
+  * Accuracy: `88.04%`
+  * Macro F1: `87.92%`
+* **Outlier Test Samples (79 noisy samples)**:
+  * Accuracy: `87.34%`
+  * Macro F1: `87.32%`
 
 ---
 

@@ -32,15 +32,15 @@ from utils import (
 # ==========================================
 MODEL_NAME = "bert-base-uncased"
 MAX_LENGTH = 128
-TRAIN_BATCH_SIZE = 2
-EVAL_BATCH_SIZE = 2
-GRADIENT_ACCUMULATION_STEPS = 4
+TRAIN_BATCH_SIZE = 16
+EVAL_BATCH_SIZE = 32
+GRADIENT_ACCUMULATION_STEPS = 1
 LEARNING_RATE = 2e-5
 WEIGHT_DECAY = 0.01
 WARMUP_RATIO = 0.1
-EPOCHS = 2
+EPOCHS = 3
 SEED = 42
-LOGGING_STEPS = 250
+LOGGING_STEPS = 50
 
 
 class SocialMediaDataset(Dataset):
